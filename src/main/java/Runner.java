@@ -1,9 +1,16 @@
+import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.Session;
 
 public class Runner {
 
     public static void main(String[] args) {
-        Session session = new Session("<!10~10~10~9~8~8~7~7~7~6~6~6~6~5~5~5~5~4~4~4~4~3~3~3~3~3~2~2~2~2~2~2~2~2~S~B~B~B~B~B~B~F~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~10~9~8~8~7~7~7~6~6~6~6~5~5~5~5~4~4~4~4~3~3~3~3~3~2~2~2~2~2~2~2~2~S~B~B~B~B~B~B~F!>@<!1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~1~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~0~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2~2!>");
+        Session session = new Session("<!5~2~F~B~5~5~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>");
+        session.getBoard().printBoard();
+        Player tony = new Player(1);
+        Player luke = new Player(2);
+        session.getBoard().movePiece(tony,3,0, 2, 0);
+        session.getBoard().movePiece(tony,2,0, 3, 0);
+        System.out.println("---------");
         session.getBoard().printBoard();
     }
 

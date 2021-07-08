@@ -12,6 +12,11 @@ public abstract class Piece {
 
     public abstract void move();
     public abstract PieceType getType();
+    public abstract boolean canMove();
+
+    public int moveLength() {
+        return 1;
+    };
 
     public int getPower() {
         return this.power;

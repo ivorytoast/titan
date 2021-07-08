@@ -20,4 +20,9 @@ public class Colonel extends Piece {
         return PieceType.COLONEL;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

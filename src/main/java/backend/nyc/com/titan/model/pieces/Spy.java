@@ -20,4 +20,9 @@ public class Spy extends Piece {
         return PieceType.SPY;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

@@ -13,5 +13,6 @@ public enum PieceType {
     SPY,
     BOMB,
     FLAG,
-    EMPTY
+    EMPTY,
+    TERRAIN
 }

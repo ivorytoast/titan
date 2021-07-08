@@ -126,6 +126,8 @@ public class Serializer {
                 return new Flag(owner);
             case "E":
                 return new Empty(owner);
+            case "T":
+                return new Terrain(owner);
             default:
                 return null;
         }

@@ -17,4 +17,16 @@ public class BoardData {
         this.isTerrain = isTerrain;
     }
 
+    public void resetLocationToEmpty() {
+        this.owner = new Player(0);
+        this.visibleBy = new HashSet<>();
+        this.visibleBy.add(new Player(0));
+        this.isTerrain = false;
+    }
+
+    public void setNewOwner(Player newOwner) {
+        this.owner = newOwner;
+        this.visibleBy.add(newOwner);
+    }
+
 }

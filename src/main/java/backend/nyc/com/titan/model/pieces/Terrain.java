@@ -4,9 +4,9 @@ import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.enums.PieceType;
 
-public class Flag extends Piece {
+public class Terrain extends Piece {
 
-    public Flag(Player owner) {
+    public Terrain(Player owner) {
         setOwner(owner);
     }
 
@@ -17,17 +17,12 @@ public class Flag extends Piece {
 
     @Override
     public PieceType getType() {
-        return PieceType.FLAG;
+        return PieceType.TERRAIN;
     }
 
     @Override
     public boolean canMove() {
         return false;
-    }
-
-    @Override
-    public int moveLength() {
-        return 0;
     }
 
 }

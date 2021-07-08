@@ -20,4 +20,14 @@ public class Bomb extends Piece {
         return PieceType.BOMB;
     }
 
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
+    @Override
+    public int moveLength() {
+        return 0;
+    }
+
 }

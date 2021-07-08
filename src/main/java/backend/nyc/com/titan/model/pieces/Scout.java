@@ -20,4 +20,14 @@ public class Scout extends Piece {
         return PieceType.SCOUT;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
+    @Override
+    public int moveLength() {
+        return Integer.MAX_VALUE;
+    }
+
 }

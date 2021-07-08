@@ -20,4 +20,9 @@ public class Miner extends Piece {
         return PieceType.MINER;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

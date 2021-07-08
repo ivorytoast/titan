@@ -20,4 +20,9 @@ public class Lieutenant extends Piece {
         return PieceType.LIEUTENANT;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

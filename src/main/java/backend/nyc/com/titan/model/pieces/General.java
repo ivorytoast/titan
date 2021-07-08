@@ -20,4 +20,9 @@ public class General extends Piece {
         return PieceType.GENERAL;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

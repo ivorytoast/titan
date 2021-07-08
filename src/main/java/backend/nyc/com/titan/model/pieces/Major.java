@@ -20,4 +20,9 @@ public class Major extends Piece {
         return PieceType.MAJOR;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

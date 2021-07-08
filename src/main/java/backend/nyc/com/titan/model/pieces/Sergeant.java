@@ -20,4 +20,9 @@ public class Sergeant extends Piece {
         return PieceType.SERGEANT;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

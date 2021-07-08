@@ -20,4 +20,9 @@ public class Captain extends Piece {
         return PieceType.CAPTAIN;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

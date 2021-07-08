@@ -20,4 +20,9 @@ public class Marshall extends Piece {
         return PieceType.MARSHALL;
     }
 
+    @Override
+    public boolean canMove() {
+        return true;
+    }
+
 }

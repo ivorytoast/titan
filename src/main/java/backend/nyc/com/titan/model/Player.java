@@ -10,7 +10,7 @@ public class Player {
         this.id = id;
     }
 
-    public int getName() {
+    public int getId() {
         return this.id;
     }
 

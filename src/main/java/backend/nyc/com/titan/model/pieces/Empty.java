@@ -20,4 +20,14 @@ public class Empty extends Piece {
         return PieceType.EMPTY;
     }
 
+    @Override
+    public boolean canMove() {
+        return false;
+    }
+
+    @Override
+    public int moveLength() {
+        return 0;
+    }
+
 }
