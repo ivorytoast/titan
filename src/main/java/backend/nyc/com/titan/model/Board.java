@@ -156,4 +156,8 @@ public class Board {
         return true;
     }
 
+    public Piece[][] getPieces() {
+        return this.pieces;
+    }
+
 }

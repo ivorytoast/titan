@@ -4,6 +4,8 @@ import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.pieces.*;
 
+import java.util.StringJoiner;
+
 /*
 <!10~10~
 10~9~8~8~7~7~7~6~6~6~
@@ -26,7 +28,7 @@ E~E~E~E~E~E~E~E~E~E~
 2~2~2~2~2~2~2~2~2~2~
 2~2~2~2~2~2~2~2~2~2~
 2~2~2~2~2~2~2~2~2~2!>
- */
+*/
 
 public class Serializer {
 
@@ -91,7 +93,74 @@ public class Serializer {
     }
 
     public static String serializeBoard(Piece[][] board) {
-        return "";
+        if (board == null) {
+            return "";
+        }
+        int rows = board.length;
+        int columns = board[0].length;
+        StringJoiner pieces = new StringJoiner("~","<!", "!>");
+        pieces.add(String.valueOf(rows));
+        pieces.add(String.valueOf(columns));
+        StringJoiner owners = new StringJoiner("~","<!", "!>");
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                pieces.add(getTypeChar(board[i][j]));
+                owners.add(String.valueOf(board[i][j].getOwner().getId()));
+            }
+        }
+
+        StringBuilder closedPieces = new StringBuilder(pieces.toString());
+        closedPieces.append("@");
+        closedPieces.append(owners);
+
+        return closedPieces.toString();
+    }
+
+    private static String getTypeChar(Piece piece) {
+        if (piece == null) {
+            System.out.println("When creating a piece, the owner cannot be null");
+            return "";
+        }
+        switch(piece.getType()) {
+            case MARSHALL:
+                return "10";
+            case GENERAL:
+                return "9";
+            case COLONEL:
+                return "8";
+            case MAJOR:
+                return "7";
+            case CAPTAIN:
+                return "6";
+            case LIEUTENANT:
+                return "5";
+            case SERGEANT:
+                return "4";
+            case MINER:
+                return "3";
+            case SCOUT:
+                return "2";
+            case SPY:
+                return "S";
+            case BOMB:
+                return "B";
+            case FLAG:
+                return "F";
+            case EMPTY:
+                return "E";
+            case TERRAIN:
+                return "T";
+            default:
+                return "";
+        }
+    }
+
+    private static StringBuilder addDimensions(int rows, int columns, StringBuilder output) {
+        output.append(rows);
+        output.append("~");
+        output.append(columns);
+        output.append("~");
+        return output;
     }
 
     private static Piece createPiece(String id, Player owner) {

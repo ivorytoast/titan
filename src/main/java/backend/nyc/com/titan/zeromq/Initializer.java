@@ -1,13 +1,20 @@
 package backend.nyc.com.titan.zeromq;
 
+import lombok.extern.java.Log;
 import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 import org.zeromq.ZThread;
 
-public class Initializer {
+@Log
+public class Initializer implements Runnable {
 
-    public static void main(String[] args) {
+    public Initializer() {
+        log.info("Starting ZeroMQ Initializer");
+    }
+
+    @Override
+    public void run() {
         try (ZContext ctx = new ZContext()) {
             ZMQ.Socket publisherError = ZThread.fork(ctx, new Publisher());
             ZMQ.Socket subscriberError = ZThread.fork(ctx, new Subscriber());
