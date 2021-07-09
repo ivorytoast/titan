@@ -25,4 +25,9 @@ public class Miner extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 3;
+    }
+
 }

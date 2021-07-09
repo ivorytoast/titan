@@ -25,4 +25,9 @@ public class General extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 9;
+    }
+
 }

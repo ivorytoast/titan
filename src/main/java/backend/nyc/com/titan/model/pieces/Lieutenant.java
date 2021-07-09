@@ -25,4 +25,9 @@ public class Lieutenant extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 5;
+    }
+
 }

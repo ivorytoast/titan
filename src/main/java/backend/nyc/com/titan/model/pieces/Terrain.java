@@ -25,4 +25,9 @@ public class Terrain extends Piece {
         return false;
     }
 
+    @Override
+    public int getPower() {
+        return -1;
+    }
+
 }

@@ -25,4 +25,9 @@ public class Sergeant extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 4;
+    }
+
 }

@@ -22,9 +22,9 @@ public class Board {
         for (int i = 0; i < pieces.length; i++) {
             for (int j = 0; j < pieces[0].length; j++) {
                 if (pieces[i][j].getType() == PieceType.TERRAIN) {
-                    this.data[i][j] = new BoardData(null, new HashSet<>(), true);
+                    this.data[i][j] = new BoardData(new Player(0), new HashSet<>(), true);
                 } else {
-                    this.data[i][j] = new BoardData(null, new HashSet<>(), false);
+                    this.data[i][j] = new BoardData(pieces[i][j].getOwner(), new HashSet<>(), false);
                 }
             }
         }
@@ -34,6 +34,23 @@ public class Board {
         for (Piece[] row : pieces) {
             for (Piece piece : row) {
                 StringBuilder output = new StringBuilder("(" + piece.getOwner().getId() + ") " + piece.getType());
+                for (int i = output.length(); i < 25; i++) {
+                    output.append(" ");
+                }
+                System.out.print(output);
+            }
+            System.out.println();
+        }
+    }
+
+    public void printBoard(Player player) {
+        for (Piece[] row : pieces) {
+            for (Piece piece : row) {
+                PieceType pieceType = piece.getType();
+                if (piece.getOwner().getId() != player.getId() && piece.getOwner().getId() != 0 && !piece.isVisible()) {
+                    pieceType = PieceType.UNKNOWN;
+                }
+                StringBuilder output = new StringBuilder("(" + piece.getOwner().getId() + ") " + pieceType);
                 for (int i = output.length(); i < 25; i++) {
                     output.append(" ");
                 }
@@ -85,14 +102,42 @@ public class Board {
         if (toPiece.getType() == PieceType.EMPTY) {
             // move
             pieces[toX][toY] = fromPiece;
-            pieces[fromX][fromY] = new Empty(new Player(0));
             data[toX][toY].setNewOwner(player);
-            data[fromX][fromY].resetLocationToEmpty();
+            resetBoardLocation(fromX, fromY);
         } else {
             // attack
+            Piece attacker = pieces[fromX][fromY];
+            Piece defender = pieces[toX][toY];
+            if (defender.getType() == PieceType.FLAG) {
+                System.out.println(player.getId() + " won!");
+            }
+            System.out.println(data[fromX][fromY].owner.getId() + "'s " + attacker.getType() + " is attacking " + data[toX][toY].owner.getId() + "'s " + defender.getType());
+            if (defender.survivesDefenseFrom(attacker)) {
+                System.out.println("Defender Won");
+                // continue -- nothing happened -- except make that piece now visible
+                defender.toggleIsVisible();
+            } else {
+                System.out.println("Defender lost");
+                resetBoardLocation(toX, toY);
+            }
+            if (attacker.survivesAttackOn(defender)) {
+                System.out.println("Attacker won");
+                pieces[toX][toY] = attacker;
+                data[toX][toY].setNewOwner(player);
+                attacker.toggleIsVisible();
+                resetBoardLocation(fromX, fromY);
+            } else {
+                System.out.println("Attacker lost");
+                resetBoardLocation(fromX, fromY);
+            }
         }
 
         return true;
+    }
+
+    private void resetBoardLocation(int x, int y) {
+        pieces[x][y] = new Empty(new Player(0));
+        data[x][y].resetLocationToEmpty();
     }
 
     private boolean areCoordinatesInBounds(int x, int y) {

@@ -25,4 +25,9 @@ public class Spy extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 0;
+    }
+
 }

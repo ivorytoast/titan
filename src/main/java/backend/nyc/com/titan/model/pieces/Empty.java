@@ -26,6 +26,11 @@ public class Empty extends Piece {
     }
 
     @Override
+    public int getPower() {
+        return -1;
+    }
+
+    @Override
     public int moveLength() {
         return 0;
     }

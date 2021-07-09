@@ -30,4 +30,9 @@ public class Scout extends Piece {
         return Integer.MAX_VALUE;
     }
 
+    @Override
+    public int getPower() {
+        return 2;
+    }
+
 }

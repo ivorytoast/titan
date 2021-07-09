@@ -25,4 +25,9 @@ public class Colonel extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 8;
+    }
+
 }

@@ -25,4 +25,9 @@ public class Major extends Piece {
         return true;
     }
 
+    @Override
+    public int getPower() {
+        return 7;
+    }
+
 }

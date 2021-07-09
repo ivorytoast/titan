@@ -26,6 +26,11 @@ public class Bomb extends Piece {
     }
 
     @Override
+    public int getPower() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public int moveLength() {
         return 0;
     }
