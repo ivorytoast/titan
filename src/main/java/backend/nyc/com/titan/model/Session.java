@@ -14,6 +14,7 @@ public class Session {
         this.board = new Board(serializedBoard);
         this.playerList = new HashSet<>();
         this.playerList.add(spectator);
+        this.playerList.add(new Player(this.playerList.size()));
     }
 
     public Session(String serializedBoard, Set<Player> playerList) {
@@ -32,6 +33,14 @@ public class Session {
 
     public Board getBoard() {
         return this.board;
+    }
+
+    public void printPlayersInSession() {
+        System.out.println("--- Player List ---");
+        for (Player player : playerList) {
+            System.out.println(player.getId());
+        }
+        System.out.println("-------------------");
     }
 
 }
