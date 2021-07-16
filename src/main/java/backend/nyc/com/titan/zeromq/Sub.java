@@ -1,6 +1,5 @@
 package backend.nyc.com.titan.zeromq;
 
-import backend.nyc.com.titan.model.Session;
 import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
@@ -12,6 +11,7 @@ public class Sub implements Runnable {
         try (ZContext context = new ZContext()) {
             System.out.println("Starting a new client...");
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
+//            subscriber.connect("tcp://proxy.titan-backend-nyc.com:5556");
             subscriber.connect("tcp://localhost:5556");
             String subscription = "test";
             subscriber.subscribe(subscription.getBytes(ZMQ.CHARSET));
@@ -22,8 +22,6 @@ public class Sub implements Runnable {
                     break;
                 String data = subscriber.recvStr();
                 assert (topic.equals(subscription));
-                Session session = new Session(data);
-                session.getBoard().printBoard();
                 System.out.println("---");
                 System.out.println("---");
             }

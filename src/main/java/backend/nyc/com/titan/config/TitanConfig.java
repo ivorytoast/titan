@@ -1,6 +1,5 @@
 package backend.nyc.com.titan.config;
 
-import backend.nyc.com.titan.zeromq.Initializer;
 import backend.nyc.com.titan.zeromq.Pub;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
@@ -13,8 +12,13 @@ import org.springframework.core.task.TaskExecutor;
 public class TitanConfig {
 
     @Bean
-    public CommandLineRunner pubSubInitializer(TaskExecutor executor) {
-        return args -> executor.execute(new Pub());
+    public Pub pub() {
+        return new Pub();
+    }
+
+    @Bean
+    public CommandLineRunner pubSubInitializer(TaskExecutor executor, Pub pub) {
+        return args -> executor.execute(pub);
     }
 
 }

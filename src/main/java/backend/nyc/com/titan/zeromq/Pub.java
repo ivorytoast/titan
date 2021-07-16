@@ -1,16 +1,24 @@
 package backend.nyc.com.titan.zeromq;
 
-import backend.nyc.com.titan.model.Session;
+import lombok.extern.java.Log;
 import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
-import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
+@Log
 public class Pub implements Runnable {
 
+    public ConcurrentLinkedDeque<String> updates;
+
     public Pub() {
+        updates = new ConcurrentLinkedDeque<>();
         System.out.println("Starting publisher...");
+    }
+
+    public void addToUpdates(String updatedBoard) {
+        this.updates.add(updatedBoard);
     }
 
     @Override
@@ -20,9 +28,13 @@ public class Pub implements Runnable {
             publisher.bind("tcp://*:5556");
 
             while (!Thread.currentThread().isInterrupted()) {
-                Thread.sleep(8000);
-                publisher.send("test", ZMQ.SNDMORE);
-                publisher.send("<!5~2~F~B~4~4~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>");
+                if (updates.size() > 0) {
+                    log.info("Received updated board!");
+                    String boardUpdate = updates.poll();
+                    publisher.send("test", ZMQ.SNDMORE);
+                    publisher.send(boardUpdate);
+                    log.info("Sent out updated board!");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

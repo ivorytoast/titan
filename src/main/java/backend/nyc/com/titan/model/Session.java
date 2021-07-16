@@ -8,17 +8,26 @@ public class Session {
     Board board;
     Set<Player> playerList;
 
-    public Session(String serializedBoard) {
-        Player spectator = new Player(0);
+    public Session(String playerName) {
+        Player spectator = new Player("Spectator", 0);
+
+        this.board = new Board(Boards.standardBoard);
+        this.playerList = new HashSet<>();
+        this.playerList.add(spectator);
+        this.playerList.add(new Player(playerName, this.playerList.size()));
+    }
+
+    public Session(String serializedBoard, String playerName) {
+        Player spectator = new Player("Spectator", 0);
 
         this.board = new Board(serializedBoard);
         this.playerList = new HashSet<>();
         this.playerList.add(spectator);
-        this.playerList.add(new Player(this.playerList.size()));
+        this.playerList.add(new Player(playerName, this.playerList.size()));
     }
 
     public Session(String serializedBoard, Set<Player> playerList) {
-        Player spectator = new Player(0);
+        Player spectator = new Player("Spectator", 0);
         this.playerList = new HashSet<>();
         this.playerList.add(spectator);
 
@@ -38,9 +47,18 @@ public class Session {
     public void printPlayersInSession() {
         System.out.println("--- Player List ---");
         for (Player player : playerList) {
-            System.out.println(player.getId());
+            System.out.println(player.toString());
         }
         System.out.println("-------------------");
+    }
+
+    public void printOutDetails() {
+        printPlayersInSession();
+        this.board.printBoard();
+    }
+
+    public void addPlayerToSession(String playerName) {
+        this.playerList.add(new Player(playerName, this.playerList.size()));
     }
 
 }

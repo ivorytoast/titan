@@ -22,7 +22,7 @@ public class Board {
         for (int i = 0; i < pieces.length; i++) {
             for (int j = 0; j < pieces[0].length; j++) {
                 if (pieces[i][j].getType() == PieceType.TERRAIN) {
-                    this.data[i][j] = new BoardData(new Player(0), new HashSet<>(), true);
+                    this.data[i][j] = new BoardData(new Player("Empty", 0), new HashSet<>(), true);
                 } else {
                     this.data[i][j] = new BoardData(pieces[i][j].getOwner(), new HashSet<>(), false);
                 }
@@ -136,7 +136,7 @@ public class Board {
     }
 
     private void resetBoardLocation(int x, int y) {
-        pieces[x][y] = new Empty(new Player(0));
+        pieces[x][y] = new Empty(new Player("Empty", 0));
         data[x][y].resetLocationToEmpty();
     }
 

@@ -4,10 +4,20 @@ import java.util.Objects;
 
 public class Player {
 
+    private String name;
     private final int id;
 
     public Player(int id) {
         this.id = id;
+    }
+
+    public Player(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public int getId() {
@@ -25,5 +35,10 @@ public class Player {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Player " + this.id + " named " + this.name;
     }
 }
