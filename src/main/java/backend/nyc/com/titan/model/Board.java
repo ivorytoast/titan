@@ -1,6 +1,7 @@
 package backend.nyc.com.titan.model;
 
 import backend.nyc.com.titan.model.enums.PieceType;
+import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.pieces.Empty;
 import backend.nyc.com.titan.serializer.Serializer;
 
@@ -22,7 +23,7 @@ public class Board {
         for (int i = 0; i < pieces.length; i++) {
             for (int j = 0; j < pieces[0].length; j++) {
                 if (pieces[i][j].getType() == PieceType.TERRAIN) {
-                    this.data[i][j] = new BoardData(new Player("Empty", 0), new HashSet<>(), true);
+                    this.data[i][j] = new BoardData(Player.createTerrain(), new HashSet<>(), true);
                 } else {
                     this.data[i][j] = new BoardData(pieces[i][j].getOwner(), new HashSet<>(), false);
                 }
@@ -30,27 +31,14 @@ public class Board {
         }
     }
 
-    public void printBoard() {
-        for (Piece[] row : pieces) {
-            for (Piece piece : row) {
-                StringBuilder output = new StringBuilder("(" + piece.getOwner().getId() + ") " + piece.getType());
-                for (int i = output.length(); i < 25; i++) {
-                    output.append(" ");
-                }
-                System.out.print(output);
-            }
-            System.out.println();
-        }
-    }
-
     public void printBoard(Player player) {
         for (Piece[] row : pieces) {
             for (Piece piece : row) {
                 PieceType pieceType = piece.getType();
-                if (piece.getOwner().getId() != player.getId() && piece.getOwner().getId() != 0 && !piece.isVisible()) {
+                if (piece.getOwner().getPlayerSide() != player.getPlayerSide() && piece.getOwner().getPlayerSide() != PlayerSide.SPECTATOR && !piece.isVisible()) {
                     pieceType = PieceType.UNKNOWN;
                 }
-                StringBuilder output = new StringBuilder("(" + piece.getOwner().getId() + ") " + pieceType);
+                StringBuilder output = new StringBuilder("(" + piece.getOwner().getPlayerSide() + ") " + pieceType);
                 for (int i = output.length(); i < 25; i++) {
                     output.append(" ");
                 }
@@ -81,11 +69,11 @@ public class Board {
             return false;
         }
 
-        int fromOwner = fromPiece.getOwner().getId();
-        int toOwner = toPiece.getOwner().getId();
+        PlayerSide fromOwner = fromPiece.getOwner().getPlayerSide();
+        PlayerSide toOwner = toPiece.getOwner().getPlayerSide();
 
-        if (fromOwner != player.getId()) {
-            System.out.println("Player " + player.getId() + " cannot move someone else's piece");
+        if (fromOwner != player.getPlayerSide()) {
+            System.out.println("Player " + player.getPlayerSide() + " cannot move someone else's piece");
             return false;
         }
 
@@ -109,9 +97,9 @@ public class Board {
             Piece attacker = pieces[fromX][fromY];
             Piece defender = pieces[toX][toY];
             if (defender.getType() == PieceType.FLAG) {
-                System.out.println(player.getId() + " won!");
+                System.out.println(player.getPlayerSide() + " won!");
             }
-            System.out.println(data[fromX][fromY].owner.getId() + "'s " + attacker.getType() + " is attacking " + data[toX][toY].owner.getId() + "'s " + defender.getType());
+            System.out.println(data[fromX][fromY].owner.getPlayerSide() + "'s " + attacker.getType() + " is attacking " + data[toX][toY].owner.getPlayerSide() + "'s " + defender.getType());
             if (defender.survivesDefenseFrom(attacker)) {
                 System.out.println("Defender Won");
                 // continue -- nothing happened -- except make that piece now visible
@@ -136,7 +124,7 @@ public class Board {
     }
 
     private void resetBoardLocation(int x, int y) {
-        pieces[x][y] = new Empty(new Player("Empty", 0));
+        pieces[x][y] = new Empty(Player.createTerrain());
         data[x][y].resetLocationToEmpty();
     }
 

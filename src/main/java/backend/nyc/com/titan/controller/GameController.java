@@ -1,5 +1,6 @@
 package backend.nyc.com.titan.controller;
 
+import backend.nyc.com.titan.domain.SessionRepository;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
 import backend.nyc.com.titan.zeromq.Pub;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class GameController {
 
-    private Pub pub;
+    private final Pub pub;
+    public SessionRepository dao;
 
-    public GameController(Pub pub) {
+    public GameController(SessionRepository dao, Pub pub) {
+        this.dao = dao;
         this.pub = pub;
     }
 
@@ -23,6 +26,13 @@ public class GameController {
     public String getBoard() {
         log.info("Returning board");
         return "<!5~2~F~B~4~4~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>";
+    }
+
+    @GetMapping("/db/board")
+    @ResponseStatus(HttpStatus.OK)
+    public String getBoardFromLatestVersionOfSession() {
+        log.info("Returning board");
+        return dao.getBoardFromLatestVersionOfSession("B1212345");
     }
 
     @PostMapping("/update/board")

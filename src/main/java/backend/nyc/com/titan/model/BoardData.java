@@ -10,7 +10,7 @@ public class BoardData {
     boolean isTerrain;
 
     public BoardData(Player owner, Set<Player> visibleBy, boolean isTerrain) {
-        this.visibleBy.add(new Player("Spectator",0));
+        this.visibleBy.add(Player.createSpectator());
         this.visibleBy.addAll(visibleBy);
 
         this.owner = owner;
@@ -18,9 +18,9 @@ public class BoardData {
     }
 
     public void resetLocationToEmpty() {
-        this.owner = new Player("Spectator", 0);
+        this.owner = Player.createSpectator();
         this.visibleBy = new HashSet<>();
-        this.visibleBy.add(new Player("Spectator", 0));
+        this.visibleBy.add(Player.createSpectator());
         this.isTerrain = false;
     }
 

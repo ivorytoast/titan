@@ -26,6 +26,23 @@ public class OkUtils {
         }
     }
 
+    public static String getBoardFromDatabase() {
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/game/db/board")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                return response.body().string();
+            } else {
+                return "No returned response...";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public static String updateBoard() throws IOException {
         RequestBody body = RequestBody.create(JSON, "{\"newBoard\":\"<!5~2~F~B~4~4~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>\"}");
         Request request = new Request.Builder()

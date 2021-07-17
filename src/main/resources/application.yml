@@ -5,7 +5,7 @@ spring:
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://titan-db-nyc-do-user-9422217-0.b.db.ondigitalocean.com:25060/books?sslmode=require
+    url: jdbc:postgresql://titan-db-nyc-do-user-9422217-0.b.db.ondigitalocean.com:25060/stratego?sslmode=require
     username: doadmin
     password: ug29y37iz1zxpnbf
   # JPA properties

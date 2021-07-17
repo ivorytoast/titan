@@ -1,27 +1,25 @@
 package backend.nyc.com.titan.model;
 
+import backend.nyc.com.titan.model.enums.PlayerSide;
+
 import java.util.Objects;
 
 public class Player {
 
-    private String name;
-    private final int id;
+    private final String name;
+    private final PlayerSide playerSide;
 
-    public Player(int id) {
-        this.id = id;
-    }
-
-    public Player(String name, int id) {
+    public Player(String name, PlayerSide playerSide) {
         this.name = name;
-        this.id = id;
+        this.playerSide = playerSide;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public int getId() {
-        return this.id;
+    public PlayerSide getPlayerSide() {
+        return this.playerSide;
     }
 
     @Override
@@ -29,16 +27,25 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(id, player.id);
+        return Objects.equals(playerSide, player.playerSide);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(playerSide);
     }
 
     @Override
     public String toString() {
-        return "Player " + this.id + " named " + this.name;
+        return this.playerSide + " player named " + this.name;
     }
+
+    public static Player createSpectator() {
+        return new Player("Spectator", PlayerSide.SPECTATOR);
+    }
+
+    public static Player createTerrain() {
+        return new Player("Terrain", PlayerSide.TERRAIN);
+    }
+
 }

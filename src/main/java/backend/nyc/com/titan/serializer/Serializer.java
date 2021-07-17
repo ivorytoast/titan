@@ -2,6 +2,7 @@ package backend.nyc.com.titan.serializer;
 
 import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
+import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.pieces.*;
 
 import java.util.StringJoiner;
@@ -77,12 +78,13 @@ public class Serializer {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 int singleArrayPosition = j + (i * columns);
-                Piece newPiece = createPiece(pieces[singleArrayPosition], new Player(Integer.parseInt(players[singleArrayPosition])));
+                Piece newPiece = createPiece(pieces[singleArrayPosition], new Player("TEMP", PlayerSide.BLUE));
+//                Piece newPiece = createPiece(pieces[singleArrayPosition], new Player(Integer.parseInt(players[singleArrayPosition])));
                 if (newPiece == null) {
                     System.out.println("There was an invalid piece on the board. The piece was: " +  pieces[j + (i * columns)]);
                     return new Piece[0][0];
                 }
-                board[i][j] = createPiece(pieces[j + (i * columns)], new Player(Integer.parseInt(players[singleArrayPosition])));
+//                board[i][j] = createPiece(pieces[j + (i * columns)], new Player(Integer.parseInt(players[singleArrayPosition])));
             }
         }
         return board;
@@ -105,7 +107,7 @@ public class Serializer {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 pieces.add(getTypeChar(board[i][j]));
-                owners.add(String.valueOf(board[i][j].getOwner().getId()));
+                owners.add(String.valueOf(board[i][j].getOwner().getPlayerSide()));
             }
         }
 
