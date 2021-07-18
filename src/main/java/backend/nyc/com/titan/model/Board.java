@@ -124,7 +124,7 @@ public class Board {
     }
 
     private void resetBoardLocation(int x, int y) {
-        pieces[x][y] = new Empty(Player.createTerrain());
+        pieces[x][y] = new Empty(PlayerSide.NON_PLAYER);
         data[x][y].resetLocationToEmpty();
     }
 

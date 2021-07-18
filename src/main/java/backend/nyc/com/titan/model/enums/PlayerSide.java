@@ -4,5 +4,5 @@ public enum PlayerSide {
     BLUE,
     RED,
     SPECTATOR,
-    TERRAIN
+    NON_PLAYER
 }

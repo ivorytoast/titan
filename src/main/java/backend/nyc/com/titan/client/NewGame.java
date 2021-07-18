@@ -25,14 +25,14 @@ public class NewGame {
 
     public static void main(String[] args) {
         NewGame game = new NewGame();
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Please provide name: ");
-        String playerName = scan.next();
-        if (playerName.equalsIgnoreCase("")) {
-            System.out.println("Player name cannot be empty");
-            return;
-        }
-        Player player = new Player(playerName, PlayerSide.BLUE);
+//        Scanner scan = new Scanner(System.in);
+//        System.out.print("Please provide name: ");
+//        String playerName = scan.next();
+//        if (playerName.equalsIgnoreCase("")) {
+//            System.out.println("Player name cannot be empty");
+//            return;
+//        }
+//        Player player = new Player(playerName, PlayerSide.BLUE);
 
 //        System.out.print("Thank you : " + player.getName() + ". Do you want to create a new game (1) or join an existing game (2): ");
 //        int startChoice = scan.nextInt();
@@ -54,11 +54,12 @@ public class NewGame {
 //            System.out.println("Did not choose a valid choice. Please answer with numbers 1 (create new) or 2 (join existing)");
 //            return;
 //        }
-        Piece[][] board = Serializer.deserializeBoard(game.getDatabaseBoard());
-        System.out.println("--- Start of Printing Board ---");
-        Utils.printBoard(board);
-        System.out.println("--- End of Printing Board ---");
-
+//        game.updateBoard();
+        OkUtils.createNewSession();
+//        Piece[][] board = Serializer.deserializeBoard(game.getDatabaseBoard());
+//        System.out.println("--- Start of Printing Board ---");
+//        Utils.printBoardFromPerspectiveOf(board, PlayerSide.SPECTATOR);
+//        System.out.println("--- End of Printing Board ---");
     }
 
     public int createNewSession(Player player) {

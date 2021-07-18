@@ -1,6 +1,7 @@
 package backend.nyc.com.titan.model;
 
 import backend.nyc.com.titan.model.enums.PieceType;
+import backend.nyc.com.titan.model.enums.PlayerSide;
 
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public abstract class Piece {
     private PieceType type;
     private int power;
     private boolean isVisible = false;
+    private PlayerSide playerSide;
 
     public abstract void move();
     public abstract PieceType getType();
@@ -26,6 +28,14 @@ public abstract class Piece {
 
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    public void setPlayerSide(PlayerSide playerSide) {
+        this.playerSide = playerSide;
+    }
+
+    public PlayerSide getPlayerSide() {
+        return this.playerSide;
     }
 
     public boolean isVisible() {

@@ -45,7 +45,7 @@ public class Player {
     }
 
     public static Player createTerrain() {
-        return new Player("Terrain", PlayerSide.TERRAIN);
+        return new Player("Terrain", PlayerSide.NON_PLAYER);
     }
 
 }

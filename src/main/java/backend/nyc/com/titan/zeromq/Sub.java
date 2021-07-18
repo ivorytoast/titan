@@ -1,5 +1,7 @@
 package backend.nyc.com.titan.zeromq;
 
+import backend.nyc.com.titan.common.Utils;
+import backend.nyc.com.titan.serializer.Serializer;
 import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
@@ -23,6 +25,7 @@ public class Sub implements Runnable {
                 String data = subscriber.recvStr();
                 assert (topic.equals(subscription));
                 System.out.println("---");
+                Utils.printBoard(Serializer.deserializeBoard(data));
                 System.out.println("---");
             }
             System.out.println("Finished listening and shutting down...");

@@ -2,6 +2,7 @@ package backend.nyc.com.titan.serializer;
 
 import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
+import backend.nyc.com.titan.model.enums.PieceType;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.pieces.*;
 
@@ -78,13 +79,20 @@ public class Serializer {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 int singleArrayPosition = j + (i * columns);
-                Piece newPiece = createPiece(pieces[singleArrayPosition], new Player("TEMP", PlayerSide.BLUE));
-//                Piece newPiece = createPiece(pieces[singleArrayPosition], new Player(Integer.parseInt(players[singleArrayPosition])));
+                PlayerSide side;
+                if (players[singleArrayPosition].equalsIgnoreCase("B")) {
+                    side = PlayerSide.BLUE;
+                } else if (players[singleArrayPosition].equalsIgnoreCase("R")) {
+                    side = PlayerSide.RED;
+                } else {
+                    side = PlayerSide.NON_PLAYER;
+                }
+                Piece newPiece = createPiece(pieces[singleArrayPosition], side);
                 if (newPiece == null) {
                     System.out.println("There was an invalid piece on the board. The piece was: " +  pieces[j + (i * columns)]);
                     return new Piece[0][0];
                 }
-//                board[i][j] = createPiece(pieces[j + (i * columns)], new Player(Integer.parseInt(players[singleArrayPosition])));
+                board[i][j] = newPiece;
             }
         }
         return board;
@@ -165,40 +173,40 @@ public class Serializer {
         return output;
     }
 
-    private static Piece createPiece(String id, Player owner) {
-        if (owner == null) {
+    private static Piece createPiece(String id, PlayerSide playerSide) {
+        if (playerSide == null) {
             System.out.println("When creating a piece, the owner cannot be null");
             return null;
         }
         switch(id) {
             case "10":
-                return new Marshall(owner);
+                return new Marshall(playerSide);
             case "9":
-                return new General(owner);
+                return new General(playerSide);
             case "8":
-                return new Colonel(owner);
+                return new Colonel(playerSide);
             case "7":
-                return new Major(owner);
+                return new Major(playerSide);
             case "6":
-                return new Captain(owner);
+                return new Captain(playerSide);
             case "5":
-                return new Lieutenant(owner);
+                return new Lieutenant(playerSide);
             case "4":
-                return new Sergeant(owner);
+                return new Sergeant(playerSide);
             case "3":
-                return new Miner(owner);
+                return new Miner(playerSide);
             case "2":
-                return new Scout(owner);
+                return new Scout(playerSide);
             case "S":
-                return new Spy(owner);
+                return new Spy(playerSide);
             case "B":
-                return new Bomb(owner);
+                return new Bomb(playerSide);
             case "F":
-                return new Flag(owner);
+                return new Flag(playerSide);
             case "E":
-                return new Empty(owner);
+                return new Empty(playerSide);
             case "T":
-                return new Terrain(owner);
+                return new Terrain(playerSide);
             default:
                 return null;
         }

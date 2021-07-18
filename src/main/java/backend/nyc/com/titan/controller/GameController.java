@@ -1,6 +1,9 @@
 package backend.nyc.com.titan.controller;
 
+import backend.nyc.com.titan.common.Utils;
+import backend.nyc.com.titan.domain.SessionDB;
 import backend.nyc.com.titan.domain.SessionRepository;
+import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
 import backend.nyc.com.titan.zeromq.Pub;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +42,19 @@ public class GameController {
     public String getBoard(@RequestBody BoardUpdateRequest updateRequest) {
         log.info("Updating board");
         String updatedBoard = updateRequest.getNewBoard();
+        SessionDB session = dao.getLatestVersionOfSession("B1212345");
+        int version = session.getVersion();
         pub.addToUpdates(updatedBoard);
+        dao.insertNewSessionVersion(updatedBoard, version + 1);
         return updatedBoard;
+    }
+
+    @GetMapping("/new/session")
+    @ResponseStatus(HttpStatus.OK)
+    public String newSession() {
+        log.info("Creating a new session");
+        dao.insertNewSession("B1212346", Utils.SAMPLE_BOARD, 1);
+        return "Created new session: " + "B1212346";
     }
 
 }

@@ -33,7 +33,28 @@ public class OkUtils {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.body() != null) {
-                return response.body().string();
+                String board = response.body().string();
+                System.out.println(board);
+                return board;
+            } else {
+                return "No returned response...";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String createNewSession() {
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/game/new/session")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                String output = response.body().string();
+                System.out.println(output);
+                return output;
             } else {
                 return "No returned response...";
             }
@@ -44,7 +65,8 @@ public class OkUtils {
     }
 
     public static String updateBoard() throws IOException {
-        RequestBody body = RequestBody.create(JSON, "{\"newBoard\":\"<!5~2~F~B~4~4~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>\"}");
+        System.out.println("Updating board!");
+        RequestBody body = RequestBody.create(JSON, "{\"newBoard\":\"<!5~2~F~B~5~5~E~T~5~5~B~F!>@<!B~B~B~B~0~0~R~R~R~R!>\"}");
         Request request = new Request.Builder()
                 .url("http://localhost:8080/game/update/board")
                 .post(body)

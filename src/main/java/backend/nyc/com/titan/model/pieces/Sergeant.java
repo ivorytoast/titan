@@ -3,11 +3,12 @@ package backend.nyc.com.titan.model.pieces;
 import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.enums.PieceType;
+import backend.nyc.com.titan.model.enums.PlayerSide;
 
 public class Sergeant extends Piece {
 
-    public Sergeant(Player owner) {
-        setOwner(owner);
+    public Sergeant(PlayerSide playerSide) {
+        setPlayerSide(playerSide);
     }
 
     @Override
