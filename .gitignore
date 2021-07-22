@@ -1,4 +1,6 @@
 src/main/java/backend/nyc/com/titan/ignore/*
+data/*
+letsencrypt/*
 
 ### Specific to this project ###
 mvnw
