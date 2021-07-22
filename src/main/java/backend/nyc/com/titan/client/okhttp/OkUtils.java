@@ -80,4 +80,16 @@ public class OkUtils {
         }
     }
 
+    public static String move(String sessionId) throws IOException {
+        System.out.println("Move!");
+        RequestBody body = RequestBody.create(JSON, "{\"sessionId\":\"" + sessionId + "\",\"playerSide\":\"B\",\"fromX\":1,\"fromY\":0,\"toX\":2,\"toY\":0}");
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/game/move")
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
 }

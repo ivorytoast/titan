@@ -9,3 +9,5 @@
 
 --- 3 by 2 (With Terrain) ---
 <!3~2~F~B~5~5~E~T~5~5~B~F!>@<!2~2~0~0~1~1!>
+
+{"sessionId":"B1255555","playerSide":"B","fromX":2,"fromY":3,"toX":2,"toY":3}

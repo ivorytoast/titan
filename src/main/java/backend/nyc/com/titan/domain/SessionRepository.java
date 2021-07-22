@@ -19,13 +19,13 @@ public interface SessionRepository extends JpaRepository<SessionDB, SessionRelat
     @Query(value = "select board from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1)", nativeQuery = true)
     String getBoardFromLatestVersionOfSession(String sessionId);
 
-    @Query(value = "select * from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1)", nativeQuery = true)
+    @Query(value = "select * from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1) and session_id = ?1", nativeQuery = true)
     SessionDB getLatestVersionOfSession(String sessionId);
 
     @Transactional
     @Modifying
-    @Query(value = "insert into session_fct values ('B1212345', ?1, ?2)", nativeQuery = true)
-    void insertNewSessionVersion(String board, int version);
+    @Query(value = "insert into session_fct values (?1, ?2, ?3)", nativeQuery = true)
+    void insertNewSessionVersion(String sessionId, String board, int version);
 
     @Transactional
     @Modifying

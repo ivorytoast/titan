@@ -52,15 +52,18 @@ public class NewGame {
 //            return;
 //        }
 //        game.updateBoard();
-        String sessionId = "B1212349";
+        String sessionId = "B1212356";
         Session session = game.createNewSession("Anthony", sessionId);
         game.joinSession(sessionId, "Luke");
         session.printPlayersInSession();
         session.getBoard().printBoard(PlayerSide.SPECTATOR);
-        session.getBoard().movePiece(PlayerSide.RED, 3, 0, 2, 0);
-        System.out.println("\n---\n");
-        session.getBoard().printBoard(PlayerSide.SPECTATOR);
-        session.getBoard().movePiece(PlayerSide.BLUE, 1, 0, 2, 0);
+//        session.getBoard().movePiece(PlayerSide.RED, 3, 0, 2, 0);
+//        System.out.println("\n---\n");
+//        session.getBoard().printBoard(PlayerSide.SPECTATOR);
+//        session.getBoard().movePiece(PlayerSide.BLUE, 1, 0, 2, 0);
+//        System.out.println("\n---\n");
+//        session.getBoard().printBoard(PlayerSide.SPECTATOR);
+        game.move(sessionId);
         System.out.println("\n---\n");
         session.getBoard().printBoard(PlayerSide.SPECTATOR);
 //        Piece[][] board = Serializer.deserializeBoard(game.getDatabaseBoard());
@@ -80,6 +83,14 @@ public class NewGame {
     public void joinSession(String sessionId, String playerName) {
         Player player = new Player(playerName, PlayerSide.RED);
         Data.sessions.get(sessionId).addPlayerToSession(player);
+    }
+
+    public void move(String sessionId) {
+        try {
+            OkUtils.move(sessionId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getDatabaseBoard(String sessionId) {
