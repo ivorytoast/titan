@@ -35,6 +35,9 @@ E~E~E~E~E~E~E~E~E~E~
 public class Serializer {
 
     public static Piece[][] deserializeBoard(String boardString) {
+        if (boardString == null) {
+            return new Piece[0][0];
+        }
         if (boardString.isEmpty()) {
             System.out.println("Board String was empty. Could not deserialize.");
             return new Piece[0][0];
@@ -98,12 +101,14 @@ public class Serializer {
         return board;
     }
 
-    private static String[] transformToStringArray(String input, int rows, int columns) {
-        return input.substring(2, input.length() - 2).split("~");
-    }
-
     public static String serializeBoard(Piece[][] board) {
         if (board == null) {
+            return "";
+        }
+        if (board.length == 0) {
+            return "";
+        }
+        if (board[0].length == 0) {
             return "";
         }
         int rows = board.length;
@@ -115,7 +120,7 @@ public class Serializer {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 pieces.add(getTypeChar(board[i][j]));
-                owners.add(String.valueOf(board[i][j].getPlayerSide()));
+                owners.add(String.valueOf(getPlayerSideChar(board[i][j].getPlayerSide())));
             }
         }
 
@@ -124,6 +129,20 @@ public class Serializer {
         closedPieces.append(owners);
 
         return closedPieces.toString();
+    }
+
+    private static char getPlayerSideChar(PlayerSide playerSide) {
+        if (playerSide == PlayerSide.RED) {
+            return 'R';
+        } else if (playerSide == PlayerSide.BLUE) {
+            return 'B';
+        } else {
+            return 'E';
+        }
+    }
+
+    private static String[] transformToStringArray(String input, int rows, int columns) {
+        return input.substring(2, input.length() - 2).split("~");
     }
 
     private static String getTypeChar(Piece piece) {
@@ -163,14 +182,6 @@ public class Serializer {
             default:
                 return "";
         }
-    }
-
-    private static StringBuilder addDimensions(int rows, int columns, StringBuilder output) {
-        output.append(rows);
-        output.append("~");
-        output.append(columns);
-        output.append("~");
-        return output;
     }
 
     private static Piece createPiece(String id, PlayerSide playerSide) {
