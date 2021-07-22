@@ -2,22 +2,15 @@ package backend.nyc.com.titan.client;
 
 import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
-import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
-/*
-    Whoever starts the game is BLUE
-    Whoever joins the game is RED (or takes the value that is in playerList)
- */
-
-@Service
-public class NewGame {
+public class JoinGame {
 
     public Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        NewGame game = new NewGame();
+        JoinGame game = new JoinGame();
         System.out.print("What is your name: ");
         String playerName = game.scan.next();
         if (playerName.equalsIgnoreCase("")) {
@@ -25,19 +18,20 @@ public class NewGame {
             return;
         }
 
-        System.out.print("Please provide new game id: ");
+        System.out.print("Please provide the game id of the game you want to join: ");
         String sessionId = game.scan.next();
         if (sessionId.equalsIgnoreCase("")) {
             System.out.println("Session ID cannot be empty");
             return;
         }
 
-        System.out.println("Thank you : " + playerName + ". We are creating a new game for you with an id of: [" + sessionId + "]");
-        System.out.println("Since you created this game, you are in control of the BLUE army!");
-        Session session = ClientUtils.CreateNewSession("Anthony", sessionId);
+        System.out.println("Thank you : " + playerName + ". We are trying to connect to game: [" + sessionId + "]");
+        System.out.println("Since you are joining this game, you are in control of the RED army!");
+        Session session = ClientUtils.JoinSession(sessionId, "Luke");
         session.printPlayersInSession();
+        session.getBoard().printBoard(PlayerSide.RED);
         while (true) {
-            ClientUtils.Move(sessionId, PlayerSide.BLUE);
+            ClientUtils.Move(sessionId, PlayerSide.RED);
         }
 
     }

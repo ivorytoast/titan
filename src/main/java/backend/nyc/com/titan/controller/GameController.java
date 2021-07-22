@@ -4,6 +4,7 @@ import backend.nyc.com.titan.common.Utils;
 import backend.nyc.com.titan.domain.SessionDB;
 import backend.nyc.com.titan.domain.SessionRepository;
 import backend.nyc.com.titan.model.Board;
+import backend.nyc.com.titan.model.BoardUpdate;
 import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
@@ -38,11 +39,12 @@ public class GameController {
     @PostMapping("/update/board")
     public String getBoard(@RequestBody BoardUpdateRequest updateRequest) {
         log.info("Updating board");
-        String updatedBoard = updateRequest.getNewBoard();
-        SessionDB session = dao.getLatestVersionOfSession("B1212345");
-        int version = session.getVersion();
-        pub.addToUpdates(updatedBoard);
-        dao.insertNewSessionVersion(updateRequest.getSessionId(), updatedBoard, version + 1);
+        final String sessionId = updateRequest.getSessionId();
+        final String updatedBoard = updateRequest.getNewBoard();
+        final SessionDB session = dao.getLatestVersionOfSession(sessionId);
+        final int version = session.getVersion();
+        pub.addToUpdates(new BoardUpdate(sessionId, updatedBoard));
+        dao.insertNewSessionVersion(sessionId, updatedBoard, version + 1);
         return updatedBoard;
     }
 
@@ -68,7 +70,7 @@ public class GameController {
         log.info("Inserting into the database the following: (" + id + ", " + newVersion);
         log.info("The board being inserted: " + newBoard);
         dao.insertNewSessionVersion(id, newBoard, newVersion);
-        pub.addToUpdates(newBoard);
+        pub.addToUpdates(new BoardUpdate(id, newBoard));
 
         return newBoard;
     }

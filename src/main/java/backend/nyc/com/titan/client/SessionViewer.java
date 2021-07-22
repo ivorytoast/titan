@@ -10,7 +10,7 @@ public class SessionViewer {
         Executor taskExecutor = Executors.newSingleThreadExecutor();
 
         try {
-            taskExecutor.execute(new Sub());
+            taskExecutor.execute(new Sub("B1212362"));
         } catch (Exception e) {
             e.printStackTrace();
         }

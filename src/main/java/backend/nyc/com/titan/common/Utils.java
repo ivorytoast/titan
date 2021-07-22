@@ -8,6 +8,9 @@ public class Utils {
     public static final String SAMPLE_BOARD = "<!5~2~F~B~5~5~E~T~5~5~B~F!>@<!B~B~B~B~0~0~R~R~R~R!>";
 
     public static void printBoard(Piece[][] pieces) {
+        if (pieces == null) {
+            System.out.println("The board input was null...");
+        }
         for (Piece[] row : pieces) {
             for (Piece piece : row) {
                 StringBuilder output = new StringBuilder("(" + piece.getPlayerSide() + ") " + piece.getType());
