@@ -3,10 +3,14 @@ package backend.nyc.com.titan.client.okhttp;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class OkUtils {
 
-    public static OkHttpClient client = new OkHttpClient();
+    public static OkHttpClient client = new OkHttpClient().newBuilder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .build();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     public static String getBoard(String url) {
@@ -26,9 +30,9 @@ public class OkUtils {
         }
     }
 
-    public static String getBoardFromDatabase() {
+    public static String getBoardFromDatabase(String id) {
         Request request = new Request.Builder()
-                .url("http://localhost:8080/game/db/board")
+                .url("http://localhost:8080/game/db/board/" + id)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -45,9 +49,9 @@ public class OkUtils {
         }
     }
 
-    public static String createNewSession() {
+    public static String createNewSession(String id) {
         Request request = new Request.Builder()
-                .url("http://localhost:8080/game/new/session")
+                .url("http://localhost:8080/game/new/session/" + id)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {

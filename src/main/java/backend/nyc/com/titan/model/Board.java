@@ -23,9 +23,9 @@ public class Board {
         for (int i = 0; i < pieces.length; i++) {
             for (int j = 0; j < pieces[0].length; j++) {
                 if (pieces[i][j].getType() == PieceType.TERRAIN) {
-                    this.data[i][j] = new BoardData(Player.createTerrain(), new HashSet<>(), true);
+                    this.data[i][j] = new BoardData(PlayerSide.NON_PLAYER, new HashSet<>(), true);
                 } else {
-                    this.data[i][j] = new BoardData(pieces[i][j].getOwner(), new HashSet<>(), false);
+                    this.data[i][j] = new BoardData(pieces[i][j].getPlayerSide(), new HashSet<>(), false);
                 }
             }
         }
@@ -35,10 +35,10 @@ public class Board {
         for (Piece[] row : pieces) {
             for (Piece piece : row) {
                 PieceType pieceType = piece.getType();
-                if (piece.getOwner().getPlayerSide() != player.getPlayerSide() && piece.getOwner().getPlayerSide() != PlayerSide.SPECTATOR && !piece.isVisible()) {
+                if (piece.getPlayerSide() != player.getPlayerSide() && piece.getPlayerSide() != PlayerSide.SPECTATOR && !piece.isVisible()) {
                     pieceType = PieceType.UNKNOWN;
                 }
-                StringBuilder output = new StringBuilder("(" + piece.getOwner().getPlayerSide() + ") " + pieceType);
+                StringBuilder output = new StringBuilder("(" + piece.getPlayerSide() + ") " + pieceType);
                 for (int i = output.length(); i < 25; i++) {
                     output.append(" ");
                 }
@@ -48,7 +48,24 @@ public class Board {
         }
     }
 
-    public boolean movePiece(Player player, int fromX, int fromY, int toX, int toY) {
+    public void printBoard(PlayerSide playerSide) {
+        for (Piece[] row : pieces) {
+            for (Piece piece : row) {
+                PieceType pieceType = piece.getType();
+                if (piece.getPlayerSide() != playerSide && playerSide != PlayerSide.SPECTATOR && piece.getPlayerSide() != PlayerSide.NON_PLAYER && !piece.isVisible()) {
+                    pieceType = PieceType.UNKNOWN;
+                }
+                StringBuilder output = new StringBuilder("(" + piece.getPlayerSide() + ") " + pieceType);
+                for (int i = output.length(); i < 25; i++) {
+                    output.append(" ");
+                }
+                System.out.print(output);
+            }
+            System.out.println();
+        }
+    }
+
+    public boolean movePiece(PlayerSide playerSide, int fromX, int fromY, int toX, int toY) {
         if (!areCoordinatesInBounds(toX, toY)) {
             System.out.println("The coordinates (" + toX + "," + toY + " are not valid coordinates");
             return false;
@@ -69,11 +86,11 @@ public class Board {
             return false;
         }
 
-        PlayerSide fromOwner = fromPiece.getOwner().getPlayerSide();
-        PlayerSide toOwner = toPiece.getOwner().getPlayerSide();
+        PlayerSide fromOwner = fromPiece.getPlayerSide();
+        PlayerSide toOwner = toPiece.getPlayerSide();
 
-        if (fromOwner != player.getPlayerSide()) {
-            System.out.println("Player " + player.getPlayerSide() + " cannot move someone else's piece");
+        if (fromOwner != playerSide) {
+            System.out.println("Player " + playerSide + " cannot move someone else's piece");
             return false;
         }
 
@@ -90,16 +107,16 @@ public class Board {
         if (toPiece.getType() == PieceType.EMPTY) {
             // move
             pieces[toX][toY] = fromPiece;
-            data[toX][toY].setNewOwner(player);
+            data[toX][toY].setNewPlayerSide(playerSide);
             resetBoardLocation(fromX, fromY);
         } else {
             // attack
             Piece attacker = pieces[fromX][fromY];
             Piece defender = pieces[toX][toY];
             if (defender.getType() == PieceType.FLAG) {
-                System.out.println(player.getPlayerSide() + " won!");
+                System.out.println(playerSide + " won!");
             }
-            System.out.println(data[fromX][fromY].owner.getPlayerSide() + "'s " + attacker.getType() + " is attacking " + data[toX][toY].owner.getPlayerSide() + "'s " + defender.getType());
+            System.out.println(data[fromX][fromY].playerSide + "'s " + attacker.getType() + " is attacking " + data[toX][toY].playerSide + "'s " + defender.getType());
             if (defender.survivesDefenseFrom(attacker)) {
                 System.out.println("Defender Won");
                 // continue -- nothing happened -- except make that piece now visible
@@ -111,7 +128,7 @@ public class Board {
             if (attacker.survivesAttackOn(defender)) {
                 System.out.println("Attacker won");
                 pieces[toX][toY] = attacker;
-                data[toX][toY].setNewOwner(player);
+                data[toX][toY].setNewPlayerSide(playerSide);
                 attacker.toggleIsVisible();
                 resetBoardLocation(fromX, fromY);
             } else {

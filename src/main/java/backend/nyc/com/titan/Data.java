@@ -7,6 +7,6 @@ import java.util.Map;
 
 public class Data {
 
-    public static Map<Integer, Session> sessions = new HashMap<>();
+    public static Map<String, Session> sessions = new HashMap<>();
 
 }

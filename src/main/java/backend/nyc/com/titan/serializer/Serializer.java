@@ -115,7 +115,7 @@ public class Serializer {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 pieces.add(getTypeChar(board[i][j]));
-                owners.add(String.valueOf(board[i][j].getOwner().getPlayerSide()));
+                owners.add(String.valueOf(board[i][j].getPlayerSide()));
             }
         }
 

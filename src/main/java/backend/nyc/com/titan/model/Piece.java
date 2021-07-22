@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public abstract class Piece {
 
-    private Player owner;
     private PieceType type;
     private int power;
     private boolean isVisible = false;
@@ -21,14 +20,6 @@ public abstract class Piece {
     public int moveLength() {
         return 1;
     };
-
-    public Player getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
 
     public void setPlayerSide(PlayerSide playerSide) {
         this.playerSide = playerSide;

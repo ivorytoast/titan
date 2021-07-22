@@ -24,18 +24,11 @@ public class GameController {
         this.pub = pub;
     }
 
-    @GetMapping("/board")
+    @GetMapping("/db/board/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String getBoard() {
+    public String getBoardFromLatestVersionOfSession(@PathVariable String id) {
         log.info("Returning board");
-        return "<!5~2~F~B~4~4~E~T~5~5~B~F!>@<!2~2~2~2~0~0~1~1~1~1!>";
-    }
-
-    @GetMapping("/db/board")
-    @ResponseStatus(HttpStatus.OK)
-    public String getBoardFromLatestVersionOfSession() {
-        log.info("Returning board");
-        return dao.getBoardFromLatestVersionOfSession("B1212345");
+        return dao.getBoardFromLatestVersionOfSession(id);
     }
 
     @PostMapping("/update/board")
@@ -49,12 +42,25 @@ public class GameController {
         return updatedBoard;
     }
 
-    @GetMapping("/new/session")
+    @GetMapping("/new/session/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String newSession() {
+    public String newSession(@PathVariable String id) {
         log.info("Creating a new session");
-        dao.insertNewSession("B1212346", Utils.SAMPLE_BOARD, 1);
-        return "Created new session: " + "B1212346";
+        dao.insertNewSession(id, Utils.SAMPLE_BOARD, 1);
+        return "Created new session: " + id;
+    }
+
+    @GetMapping("/join/session/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String joinSession(@PathVariable String id) {
+        log.info("Joining a new session");
+        SessionDB session = dao.getLatestVersionOfSession(id);
+        if (session == null) {
+            log.error(id + " session does not exist");
+        } else {
+
+        }
+        return "Created new session: " + id;
     }
 
 }

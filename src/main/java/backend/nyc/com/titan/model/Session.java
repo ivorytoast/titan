@@ -7,13 +7,15 @@ import java.util.Set;
 
 public class Session {
 
+    // Handled by sql
     Board board;
+    // Handled by redis
     Set<Player> playerList;
 
     public Session(Player player) {
         Player spectator = Player.createSpectator();
 
-        this.board = new Board(Boards.standardBoard);
+        this.board = new Board(Utils.SAMPLE_BOARD);
         this.playerList = new HashSet<>();
         this.playerList.add(spectator);
         this.playerList.add(player);

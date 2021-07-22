@@ -21,8 +21,6 @@ import java.util.Scanner;
 @Service
 public class NewGame {
 
-    int counter = 1;
-
     public static void main(String[] args) {
         NewGame game = new NewGame();
 //        Scanner scan = new Scanner(System.in);
@@ -32,7 +30,6 @@ public class NewGame {
 //            System.out.println("Player name cannot be empty");
 //            return;
 //        }
-//        Player player = new Player(playerName, PlayerSide.BLUE);
 
 //        System.out.print("Thank you : " + player.getName() + ". Do you want to create a new game (1) or join an existing game (2): ");
 //        int startChoice = scan.nextInt();
@@ -55,26 +52,38 @@ public class NewGame {
 //            return;
 //        }
 //        game.updateBoard();
-        OkUtils.createNewSession();
+        String sessionId = "B1212349";
+        Session session = game.createNewSession("Anthony", sessionId);
+        game.joinSession(sessionId, "Luke");
+        session.printPlayersInSession();
+        session.getBoard().printBoard(PlayerSide.SPECTATOR);
+        session.getBoard().movePiece(PlayerSide.RED, 3, 0, 2, 0);
+        System.out.println("\n---\n");
+        session.getBoard().printBoard(PlayerSide.SPECTATOR);
+        session.getBoard().movePiece(PlayerSide.BLUE, 1, 0, 2, 0);
+        System.out.println("\n---\n");
+        session.getBoard().printBoard(PlayerSide.SPECTATOR);
 //        Piece[][] board = Serializer.deserializeBoard(game.getDatabaseBoard());
 //        System.out.println("--- Start of Printing Board ---");
 //        Utils.printBoardFromPerspectiveOf(board, PlayerSide.SPECTATOR);
 //        System.out.println("--- End of Printing Board ---");
     }
 
-    public int createNewSession(Player player) {
-        counter++;
+    public Session createNewSession(String playerName, String id) {
+        Player player = new Player(playerName, PlayerSide.BLUE);
+        OkUtils.createNewSession(id);
         Session session = new Session(player);
-        Data.sessions.put(counter, session);
-        return counter;
+        Data.sessions.put(id, session);
+        return session;
     }
 
-    public void joinSession(int sessionId, String playerName) {
-//        Data.sessions.get(sessionId).addPlayerToSession(playerName);
+    public void joinSession(String sessionId, String playerName) {
+        Player player = new Player(playerName, PlayerSide.RED);
+        Data.sessions.get(sessionId).addPlayerToSession(player);
     }
 
-    public String getDatabaseBoard() {
-        return OkUtils.getBoardFromDatabase();
+    public String getDatabaseBoard(String sessionId) {
+        return OkUtils.getBoardFromDatabase(sessionId);
     }
 
     public void updateBoard() {
