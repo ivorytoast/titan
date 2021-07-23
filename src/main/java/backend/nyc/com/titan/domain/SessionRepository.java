@@ -16,7 +16,7 @@ public interface SessionRepository extends JpaRepository<SessionDB, SessionRelat
     List<SessionDB> getSessionsById(String id);
     List<SessionDB> findDistinctSessionsById(String id);
 
-    @Query(value = "select board from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1)", nativeQuery = true)
+    @Query(value = "select board from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1) and session_id = ?1", nativeQuery = true)
     String getBoardFromLatestVersionOfSession(String sessionId);
 
     @Query(value = "select * from session_fct where board_version in (select MAX(board_version) from session_fct where session_id = ?1) and session_id = ?1", nativeQuery = true)

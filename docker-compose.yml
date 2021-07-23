@@ -1,14 +1,14 @@
 version: '3'
 services:
   web:
-    image: ivorytoast3853/titan-amg:0.0.7
+    image: ivorytoast3853/titan-amg:0.0.8
     restart: always
     ports:
       - '8080:8080'
       - '5556:5556'
   app:
+    restart: always
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
     ports:
       - '80:80'
       - '81:81'
@@ -23,8 +23,8 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
   db:
+    restart: always
     image: 'jc21/mariadb-aria:latest'
-    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 'npm'
       MYSQL_DATABASE: 'npm'
@@ -33,6 +33,7 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
   redis:
+    restart: always
     image: "redis:alpine"
     ports:
       - "6379:6379"

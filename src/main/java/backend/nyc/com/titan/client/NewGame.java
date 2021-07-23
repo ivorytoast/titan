@@ -1,6 +1,6 @@
 package backend.nyc.com.titan.client;
 
-import backend.nyc.com.titan.model.Session;
+import backend.nyc.com.titan.common.BoardUtils;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import org.springframework.stereotype.Service;
 
@@ -34,12 +34,13 @@ public class NewGame {
 
         System.out.println("Thank you : " + playerName + ". We are creating a new game for you with an id of: [" + sessionId + "]");
         System.out.println("Since you created this game, you are in control of the BLUE army!");
-        Session session = ClientUtils.CreateNewSession("Anthony", sessionId);
-        session.printPlayersInSession();
+        ClientUtils.StartRedisGame(sessionId, playerName);
+        ClientUtils.PrintOutLatestSessionBoard(sessionId);
         while (true) {
             ClientUtils.Move(sessionId, PlayerSide.BLUE);
+            System.out.println("--- Updated Board ---");
+            ClientUtils.PrintOutLatestSessionBoard(sessionId);
         }
-
     }
 
 }

@@ -1,30 +1,48 @@
 package backend.nyc.com.titan.client;
 
-import backend.nyc.com.titan.Data;
 import backend.nyc.com.titan.client.okhttp.OkUtils;
+import backend.nyc.com.titan.common.BoardUtils;
 import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
+import backend.nyc.com.titan.redis.RedisClient;
+import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+@Log
 public class ClientUtils {
 
     private static final Scanner scan = new Scanner(System.in);
 
-    public static Session CreateNewSession(String playerName, String id) {
-        Player player = new Player(playerName, PlayerSide.BLUE);
-        OkUtils.createNewSession(id);
-        Session session = new Session(player);
-        Data.sessions.put(id, session);
-        return session;
+    public static void StartRedisGame(String sessionId, String playerName) {
+        try {
+            log.info(OkUtils.CreateNewBoard(sessionId, playerName));
+        } catch (Exception e) {
+            log.warning("Error creating a new board for session id: " + sessionId);
+        }
     }
 
-    public static Session JoinSession(String sessionId, String playerName) {
-        Player player = new Player(playerName, PlayerSide.RED);
-        Data.sessions.get(sessionId).addPlayerToSession(player);
-        return Data.sessions.get(sessionId);
+    public static void JoinSession(String sessionId, String playerName) {
+        try {
+            log.info(OkUtils.JoinSession(sessionId, playerName));
+        } catch (Exception e) {
+            log.warning("Error joining session: " + sessionId);
+        }
+    }
+
+    public static void PrintOutLatestSessionBoard(String sessionId) {
+        String updatedBoard = ClientUtils.GetDatabaseBoard(sessionId);
+        BoardUtils.PrintBoard(updatedBoard);
+    }
+
+    public static Session CreateNewSession(String playerName, String id) throws Exception {
+        Player player = new Player(playerName, PlayerSide.BLUE);
+        OkUtils.CreateNewBoard(id, playerName);
+        Session session = new Session(player);
+        RedisClient.AddNewSession(id);
+        return session;
     }
 
     public static void Move(String sessionId, PlayerSide playerSide) {
@@ -50,7 +68,7 @@ public class ClientUtils {
     }
 
     public static String GetDatabaseBoard(String sessionId) {
-        return OkUtils.getBoardFromDatabase(sessionId);
+        return OkUtils.GetCurrentBoardFromDatabase(sessionId);
     }
 
     public static void UpdateBoard() {

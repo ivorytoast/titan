@@ -1,14 +1,16 @@
 package backend.nyc.com.titan.controller;
 
-import backend.nyc.com.titan.common.Utils;
+import backend.nyc.com.titan.common.BoardUtils;
 import backend.nyc.com.titan.domain.SessionDB;
 import backend.nyc.com.titan.domain.SessionRepository;
 import backend.nyc.com.titan.model.Board;
 import backend.nyc.com.titan.model.BoardUpdate;
-import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
+import backend.nyc.com.titan.model.requests.JoinGameRequest;
 import backend.nyc.com.titan.model.requests.MoveRequest;
+import backend.nyc.com.titan.model.requests.NewGameRequest;
+import backend.nyc.com.titan.redis.RedisClient;
 import backend.nyc.com.titan.serializer.Serializer;
 import backend.nyc.com.titan.zeromq.Pub;
 import lombok.extern.slf4j.Slf4j;
@@ -75,25 +77,26 @@ public class GameController {
         return newBoard;
     }
 
-    @GetMapping("/new/session/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String newSession(@PathVariable String id) {
+    @PostMapping("/new/redis")
+    public String newSession(@RequestBody NewGameRequest newGameRequest) {
         log.info("Creating a new session");
-        dao.insertNewSession(id, Utils.SAMPLE_BOARD, 1);
-        return "Created new session: " + id;
+        String sessionId = newGameRequest.getSessionId();
+        String playerName = newGameRequest.getPlayerName();
+        dao.insertNewSession(sessionId, BoardUtils.SAMPLE_BOARD, 1);
+        RedisClient.AddNewSession(sessionId);
+        RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
+        RedisClient.PrintPlayersInSession(sessionId);
+        log.info("Created new session on server: " + sessionId);
+        return "Created new session (Client Log): " + sessionId;
     }
 
-    @GetMapping("/join/session/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public String joinSession(@PathVariable String id) {
+    @PostMapping("/join")
+    public String joinSession(@RequestBody JoinGameRequest joinGameRequest) {
         log.info("Joining a new session");
-        SessionDB session = dao.getLatestVersionOfSession(id);
-        if (session == null) {
-            log.error(id + " session does not exist");
-        } else {
-
-        }
-        return "Created new session: " + id;
+        String sessionId = joinGameRequest.getSessionId();
+        String playerName = joinGameRequest.getPlayerName();
+        RedisClient.AddPlayerToSession(sessionId, PlayerSide.RED, playerName);
+        return "Joined session: " + sessionId;
     }
 
 }

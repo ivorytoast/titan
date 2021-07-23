@@ -1,6 +1,6 @@
 package backend.nyc.com.titan.model;
 
-import backend.nyc.com.titan.common.Utils;
+import backend.nyc.com.titan.common.BoardUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +15,7 @@ public class Session {
     public Session(Player player) {
         Player spectator = Player.createSpectator();
 
-        this.board = new Board(Utils.SAMPLE_BOARD);
+        this.board = new Board(BoardUtils.SAMPLE_BOARD);
         this.playerList = new HashSet<>();
         this.playerList.add(spectator);
         this.playerList.add(player);
@@ -56,7 +56,7 @@ public class Session {
 
     public void printOutDetails() {
         printPlayersInSession();
-        Utils.printBoard(this.board.pieces);
+        BoardUtils.PrintBoard(this.board.pieces);
     }
 
     public void printOutDetails(Player player) {
