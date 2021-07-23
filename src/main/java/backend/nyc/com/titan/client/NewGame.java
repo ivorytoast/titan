@@ -36,8 +36,9 @@ public class NewGame {
         System.out.println("Since you created this game, you are in control of the BLUE army!");
         ClientUtils.StartRedisGame(sessionId, playerName);
         ClientUtils.PrintOutLatestSessionBoard(sessionId);
+        PlayerSide playerSide = ClientUtils.PlayerSideStringToPlayerSide(ClientUtils.JoinSession(sessionId, playerName));
         while (true) {
-            ClientUtils.Move(sessionId, PlayerSide.BLUE);
+            ClientUtils.Move(sessionId, playerSide);
             System.out.println("--- Updated Board ---");
             ClientUtils.PrintOutLatestSessionBoard(sessionId);
         }

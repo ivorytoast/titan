@@ -5,6 +5,9 @@ import backend.nyc.com.titan.model.enums.PlayerSide;
 import lombok.extern.java.Log;
 import redis.clients.jedis.Jedis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Log
 public class RedisClient {
 
@@ -18,6 +21,28 @@ public class RedisClient {
         String key = getPlayerKey(sessionId, playerSide);
         jedis.set(key, playerName);
         log.info("Added " + playerName + " to session " + sessionId + " as the " + playerSide.name() + " player");
+    }
+
+    private static PlayerSide playerSideCharToPlayerSide(char c) {
+        if (c == 'B') {
+            return PlayerSide.BLUE;
+        } else if (c == 'R') {
+            return PlayerSide.RED;
+        } else {
+            return PlayerSide.SPECTATOR;
+        }
+    }
+
+    public static List<Player> GetPlayerListFromSession(String sessionId) {
+        List<Player> players = new ArrayList<>();
+        for (char c : PLAYER_TYPES) {
+            String key = sessionId + "_" + c;
+            String value = jedis.get(key);
+            if (value != null) {
+                players.add(new Player(value, playerSideCharToPlayerSide(c)));
+            }
+        }
+        return players;
     }
 
     public static Player GetPlayerFromSession(String sessionId, PlayerSide playerSide) {
@@ -36,15 +61,15 @@ public class RedisClient {
     }
 
     public static void PrintPlayersInSession(String sessionId) {
-        log.info("--- List of Players in " + sessionId);
+        log.info("----------- List of Players in " + sessionId + " -------------");
         for (char c : PLAYER_TYPES) {
             String key = sessionId + "_" + c;
             String value = jedis.get(key);
             if (value != null) {
-                log.info(value);
+                log.info("(" + c + ")" + value);
             }
         }
-        log.info("-------------------------------");
+        log.info("-----------------------------------------------------------");
     }
 
     private static String getPlayerKey(String sessionId, PlayerSide playerSide) {

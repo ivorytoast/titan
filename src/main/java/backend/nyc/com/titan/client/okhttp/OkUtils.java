@@ -54,6 +54,25 @@ public class OkUtils {
         }
     }
 
+    public static String PrintPlayersInSession(String sessionId) {
+        Request request = new Request.Builder()
+                .url(TITAN + "/game/sessions/players/" + sessionId)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.body() != null) {
+                String board = response.body().string();
+                System.out.println(board);
+                return board;
+            } else {
+                return "No returned response...";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public static String updateBoard() throws IOException {
         System.out.println("Updating board!");
         RequestBody body = RequestBody.create(JSON, "{\"newBoard\":\"<!5~2~F~B~5~5~E~T~5~5~B~F!>@<!B~B~B~B~0~0~R~R~R~R!>\"}");

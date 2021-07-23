@@ -1,7 +1,9 @@
 version: '3'
 services:
   web:
-    image: ivorytoast3853/titan-amg:0.0.8
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     ports:
       - '8080:8080'

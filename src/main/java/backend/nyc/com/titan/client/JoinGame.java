@@ -1,8 +1,6 @@
 package backend.nyc.com.titan.client;
 
-import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
-import backend.nyc.com.titan.redis.RedisClient;
 
 import java.util.Scanner;
 
@@ -27,12 +25,10 @@ public class JoinGame {
         }
 
         System.out.println("Thank you : " + playerName + ". We are trying to connect to game: [" + sessionId + "]");
-        System.out.println("Since you are joining this game, you are in control of the RED army!");
-        ClientUtils.JoinSession(sessionId, playerName);
-        ClientUtils.PrintOutLatestSessionBoard(sessionId);
+        PlayerSide playerSide = ClientUtils.PlayerSideStringToPlayerSide(ClientUtils.JoinSession(sessionId, playerName));
         while (true) {
-            ClientUtils.Move(sessionId, PlayerSide.RED);
-            ClientUtils.PrintOutLatestSessionBoard(sessionId);
+            ClientUtils.Move(sessionId, playerSide);
+            System.out.println("Move completed");
         }
 
     }

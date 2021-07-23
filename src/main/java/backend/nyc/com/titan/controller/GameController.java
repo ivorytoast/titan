@@ -5,6 +5,7 @@ import backend.nyc.com.titan.domain.SessionDB;
 import backend.nyc.com.titan.domain.SessionRepository;
 import backend.nyc.com.titan.model.Board;
 import backend.nyc.com.titan.model.BoardUpdate;
+import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
 import backend.nyc.com.titan.model.requests.JoinGameRequest;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/game", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,8 +98,41 @@ public class GameController {
         log.info("Joining a new session");
         String sessionId = joinGameRequest.getSessionId();
         String playerName = joinGameRequest.getPlayerName();
-        RedisClient.AddPlayerToSession(sessionId, PlayerSide.RED, playerName);
-        return "Joined session: " + sessionId;
+        boolean isBlueTaken = false;
+        boolean isRedTaken = false;
+        List<Player> players = RedisClient.GetPlayerListFromSession(sessionId);
+        for (Player player : players) {
+            if (player.getName().equalsIgnoreCase(playerName)) {
+                log.info("Player already in session. No need to join");
+                return player.getPlayerSide().name();
+            }
+            if (player.getPlayerSide() == PlayerSide.BLUE) {
+                isBlueTaken = true;
+            }
+            if (player.getPlayerSide() == PlayerSide.RED) {
+                isRedTaken = true;
+            }
+        }
+        if (isBlueTaken && isRedTaken) {
+            RedisClient.AddPlayerToSession(sessionId, PlayerSide.SPECTATOR, playerName);
+            log.info("Joined session as a spectator since the session was already full for session: " + sessionId);
+            return PlayerSide.SPECTATOR.name();
+        } else if (isBlueTaken) {
+            RedisClient.AddPlayerToSession(sessionId, PlayerSide.RED, playerName);
+            log.info("Joined session as red since there was a spot but blue was already taken for session: " + sessionId);
+            return PlayerSide.RED.name();
+        } else {
+            RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
+            log.info("Joined session as blue since there was a spot and blue was not taken for session: " + sessionId);
+            return PlayerSide.BLUE.name();
+        }
+    }
+
+    @GetMapping("/sessions/players/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void getPlayersInSession(@PathVariable String id) {
+        log.info("Returning board");
+        RedisClient.PrintPlayersInSession(id);
     }
 
 }

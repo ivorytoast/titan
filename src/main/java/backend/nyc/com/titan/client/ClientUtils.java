@@ -18,23 +18,34 @@ public class ClientUtils {
 
     public static void StartRedisGame(String sessionId, String playerName) {
         try {
-            log.info(OkUtils.CreateNewBoard(sessionId, playerName));
+            System.out.println(OkUtils.CreateNewBoard(sessionId, playerName));
         } catch (Exception e) {
-            log.warning("Error creating a new board for session id: " + sessionId);
+            System.out.println("Error creating a new board for session id: " + sessionId);
         }
     }
 
-    public static void JoinSession(String sessionId, String playerName) {
+    public static String JoinSession(String sessionId, String playerName) {
         try {
-            log.info(OkUtils.JoinSession(sessionId, playerName));
+            String playerSideString = OkUtils.JoinSession(sessionId, playerName);
+            System.out.println("Assigned Player Side: " + playerSideString);
+            return OkUtils.JoinSession(sessionId, playerName);
         } catch (Exception e) {
-            log.warning("Error joining session: " + sessionId);
+            System.out.println("Error joining session: " + sessionId);
+            return "Error!";
         }
     }
 
     public static void PrintOutLatestSessionBoard(String sessionId) {
         String updatedBoard = ClientUtils.GetDatabaseBoard(sessionId);
         BoardUtils.PrintBoard(updatedBoard);
+    }
+
+    public static void PrintOutPlayersInSession(String sessionId) {
+        try {
+            System.out.println(OkUtils.PrintPlayersInSession(sessionId));
+        } catch (Exception e) {
+            System.out.println("Error printing players in session: " + sessionId);
+        }
     }
 
     public static Session CreateNewSession(String playerName, String id) throws Exception {
@@ -76,6 +87,16 @@ public class ClientUtils {
             OkUtils.updateBoard();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static PlayerSide PlayerSideStringToPlayerSide(String playerSideString) {
+        if (playerSideString.equalsIgnoreCase("RED")) {
+            return PlayerSide.RED;
+        } else if (playerSideString.equalsIgnoreCase("BLUE")) {
+            return PlayerSide.BLUE;
+        } else {
+            return PlayerSide.SPECTATOR;
         }
     }
 

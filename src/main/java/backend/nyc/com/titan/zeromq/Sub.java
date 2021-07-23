@@ -1,5 +1,6 @@
 package backend.nyc.com.titan.zeromq;
 
+import backend.nyc.com.titan.client.ClientUtils;
 import backend.nyc.com.titan.common.BoardUtils;
 import backend.nyc.com.titan.serializer.Serializer;
 import lombok.extern.java.Log;
@@ -29,6 +30,8 @@ public class Sub implements Runnable {
 //            subscriber.connect("tcp://localhost:5556");
             subscriber.subscribe(topic.getBytes(ZMQ.CHARSET));
             System.out.println("Listening for new packets...");
+            ClientUtils.PrintOutPlayersInSession(getTopic());
+            ClientUtils.PrintOutLatestSessionBoard(getTopic());
             while (true) {
                 String topic = subscriber.recvStr();
                 if (topic == null)
