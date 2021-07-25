@@ -145,7 +145,7 @@ public class Serializer {
         return input.substring(2, input.length() - 2).split("~");
     }
 
-    private static String getTypeChar(Piece piece) {
+    public static String getTypeChar(Piece piece) {
         if (piece == null) {
             System.out.println("When creating a piece, the owner cannot be null");
             return "";
