@@ -11,9 +11,7 @@ public class MoveRequest {
     private int toX;
     private int toY;
 
-    public MoveRequest() {
-
-    }
+    public MoveRequest() {}
 
     public MoveRequest(String sessionId, Character playerSide, int fromX, int fromY, int toX, int toY) {
         this.sessionId = sessionId;

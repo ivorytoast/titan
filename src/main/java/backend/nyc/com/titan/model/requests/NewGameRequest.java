@@ -2,8 +2,10 @@ package backend.nyc.com.titan.model.requests;
 
 public class NewGameRequest {
 
-    private final String sessionId;
-    private final String playerName;
+    private String sessionId;
+    private String playerName;
+
+    public NewGameRequest() {}
 
     public NewGameRequest(String sessionId, String playerName) {
         this.sessionId = sessionId;
