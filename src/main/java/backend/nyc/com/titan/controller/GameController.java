@@ -70,7 +70,8 @@ public class GameController {
         // Update the database
         SessionDB dbSession = dao.getLatestVersionOfSession(id);
         int version = dbSession.getVersion();
-        String newBoard = Serializer.serializeBoard(board.getPieces());
+        String nextPlayer = Serializer.GetNextPlayer(session.getBoard());
+        String newBoard = Serializer.serializeBoard(board.getPieces(), nextPlayer);
         int newVersion = version + 1;
         log.info("Inserting into the database the following: (" + id + ", " + newVersion);
         log.info("The board being inserted: " + newBoard);
@@ -88,7 +89,7 @@ public class GameController {
         dao.insertNewSession(sessionId, BoardUtils.SAMPLE_BOARD, 1);
         RedisClient.AddNewSession(sessionId);
         RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
-        RedisClient.PrintPlayersInSession(sessionId);
+        RedisClient.ReturnPlayersInSession(sessionId);
         log.info("Created new session on server: " + sessionId);
         return "Created new session (Client Log): " + sessionId;
     }
@@ -130,9 +131,9 @@ public class GameController {
 
     @GetMapping("/sessions/players/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void getPlayersInSession(@PathVariable String id) {
+    public List<String> getPlayersInSession(@PathVariable String id) {
         log.info("Returning board");
-        RedisClient.PrintPlayersInSession(id);
+        return RedisClient.ReturnPlayersInSession(id);
     }
 
 }

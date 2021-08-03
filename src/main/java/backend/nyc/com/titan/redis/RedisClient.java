@@ -60,16 +60,19 @@ public class RedisClient {
         AddPlayerToSession(sessionId, PlayerSide.NON_PLAYER, "Spectator");
     }
 
-    public static void PrintPlayersInSession(String sessionId) {
+    public static List<String> ReturnPlayersInSession(String sessionId) {
+        List<String> output = new ArrayList<>();
         log.info("----------- List of Players in " + sessionId + " -------------");
         for (char c : PLAYER_TYPES) {
             String key = sessionId + "_" + c;
             String value = jedis.get(key);
             if (value != null) {
+                output.add(value);
                 log.info("(" + c + ")" + value);
             }
         }
         log.info("-----------------------------------------------------------");
+        return output;
     }
 
     private static String getPlayerKey(String sessionId, PlayerSide playerSide) {

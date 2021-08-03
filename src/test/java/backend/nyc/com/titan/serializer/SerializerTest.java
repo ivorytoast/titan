@@ -32,37 +32,37 @@ public class SerializerTest {
 
     @Test
     void serialize_1() {
-        String output = Serializer.serializeBoard(testOne);
-        assertEquals("<!5~2~F~B~10~10~E~T~10~10~F~B!>@<!R~R~R~R~E~E~B~B~B~B!>", output);
+        String output = Serializer.serializeBoard(testOne, "B");
+        assertEquals("5~2@F~B~10~10~E~T~10~10~F~B@R~R~R~R~E~E~B~B~B~B@B", output);
     }
 
     @Test
     void serialize_2() {
-        String output = Serializer.serializeBoard(testTwo);
-        assertEquals("<!3~2~10~10~E~T~10~10!>@<!R~R~E~E~B~B!>", output);
+        String output = Serializer.serializeBoard(testTwo, "R");
+        assertEquals("3~2@10~10~E~T~10~10@R~R~E~E~B~B@R", output);
     }
 
     @Test
     void serialize_3() {
-        String output = Serializer.serializeBoard(null);
+        String output = Serializer.serializeBoard(null, "");
         assertEquals("", output);
     }
 
     @Test
     void serialize_4() {
-        String output = Serializer.serializeBoard(new Piece[][]{});
+        String output = Serializer.serializeBoard(new Piece[][]{}, "");
         assertEquals("", output);
     }
 
     @Test
     void deserialize_1() {
-        Piece[][] output = Serializer.deserializeBoard("<!5~2~F~B~10~10~E~T~10~10~F~B!>@<!R~R~R~R~E~E~B~B~B~B!>");
+        Piece[][] output = Serializer.deserializeBoard("5~2@F~B~10~10~E~T~10~10~F~B@R~R~R~R~E~E~B~B~B~B");
         assertTrue(areEqual(testOne, output));
     }
 
     @Test
     void deserialize_2() {
-        Piece[][] output = Serializer.deserializeBoard("<!3~2~10~10~E~T~10~10!>@<!R~R~E~E~B~B!>");
+        Piece[][] output = Serializer.deserializeBoard("3~2@10~10~E~T~10~10@R~R~E~E~B~B");
         assertTrue(areEqual(testTwo, output));
     }
 

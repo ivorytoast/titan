@@ -8,29 +8,8 @@ import backend.nyc.com.titan.model.pieces.*;
 
 import java.util.StringJoiner;
 
-/*
-<!10~10~
-10~9~8~8~7~7~7~6~6~6~
-6~5~5~5~5~4~4~4~4~3~
-3~3~3~3~2~2~2~2~2~2~
-2~2~S~B~B~B~B~B~B~F~
-E~E~E~E~E~E~E~E~E~E~
-E~E~E~E~E~E~E~E~E~E~
-10~9~8~8~7~7~7~6~6~6~
-6~5~5~5~5~4~4~4~4~3~
-3~3~3~3~2~2~2~2~2~2~
-2~2~S~B~B~B~B~B~B~F!>
-@<!1~1~1~1~1~1~1~1~1~1~
-1~1~1~1~1~1~1~1~1~1~
-1~1~1~1~1~1~1~1~1~1~
-1~1~1~1~1~1~1~1~1~1~
-0~0~0~0~0~0~0~0~0~0~
-0~0~0~0~0~0~0~0~0~0~
-2~2~2~2~2~2~2~2~2~2~
-2~2~2~2~2~2~2~2~2~2~
-2~2~2~2~2~2~2~2~2~2~
-2~2~2~2~2~2~2~2~2~2!>
-*/
+
+// "5~2@F~B~E~5~5~T~5~5~B~F@B~B~E~B~B~E~R~R~R~R@B"
 
 public class Serializer {
 
@@ -46,32 +25,21 @@ public class Serializer {
             System.out.println("Board string is not long enough to be valid");
             return new Piece[0][0];
         }
-        if (!boardString.substring(0, 2).equalsIgnoreCase("<!")) {
-            System.out.println("Invalid end to the string. Serialized board must start with '<!'");
-            return new Piece[0][0];
-        }
-        if (!boardString.substring(boardString.length() - 2).equalsIgnoreCase("!>")) {
-            System.out.println("Invalid start to the string. Serialized board must end with '!>'");
-            return new Piece[0][0];
-        }
         String[] components = boardString.split("@");
 
-        String[] dimensions = components[0].substring(2, components[0].length() - 2).split("~");
+        String[] dimensions = components[0].split("~");
         int rows = Integer.parseInt(dimensions[0]);
         int columns = Integer.parseInt(dimensions[1]);
         int totalSpaces = rows * columns;
 
-        String piecesString = components[0].substring(components[0].indexOf("~", components[0].indexOf("~") + 1) + 1);
-        piecesString = "<!" + piecesString;
-
-        String[] pieces = transformToStringArray(piecesString, rows, columns);
+        String[] pieces = components[1].split("~");
         if (pieces.length != totalSpaces) {
             System.out.println("Invalid amount of pieces. The board says it has " + rows + " rows and " + columns + " columns. " +
                     "Therefore, a total of " + totalSpaces + " total spaces." + "But there were only " + (pieces.length - 2) + " pieces provided.");
             return null;
         }
 
-        String[] players = transformToStringArray(components[1], rows, columns);
+        String[] players = components[2].split("~");
 
         if (pieces.length != players.length) {
             System.out.println("The amount of pieces and players are not matching up. Number of pieces: " + pieces.length + " compared to: " + players.length);
@@ -101,7 +69,7 @@ public class Serializer {
         return board;
     }
 
-    public static String serializeBoard(Piece[][] board) {
+    public static String serializeBoard(Piece[][] board, String currentPlayer) {
         if (board == null) {
             return "";
         }
@@ -113,10 +81,14 @@ public class Serializer {
         }
         int rows = board.length;
         int columns = board[0].length;
-        StringJoiner pieces = new StringJoiner("~","<!", "!>");
-        pieces.add(String.valueOf(rows));
-        pieces.add(String.valueOf(columns));
-        StringJoiner owners = new StringJoiner("~","<!", "!>");
+        StringBuilder dimensions = new StringBuilder("");
+        dimensions.append(rows);
+        dimensions.append("~");
+        dimensions.append(columns);
+        dimensions.append("@");
+
+        StringJoiner pieces = new StringJoiner("~","", "");
+        StringJoiner owners = new StringJoiner("~","", "");
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 pieces.add(getTypeChar(board[i][j]));
@@ -124,9 +96,13 @@ public class Serializer {
             }
         }
 
-        StringBuilder closedPieces = new StringBuilder(pieces.toString());
+        StringBuilder closedPieces = new StringBuilder();
+        closedPieces.append(dimensions);
+        closedPieces.append(pieces);
         closedPieces.append("@");
         closedPieces.append(owners);
+        closedPieces.append("@");
+        closedPieces.append(currentPlayer);
 
         return closedPieces.toString();
     }
@@ -138,6 +114,16 @@ public class Serializer {
             return 'B';
         } else {
             return 'E';
+        }
+    }
+
+    public static String GetNextPlayer(String board) {
+        String[] values = board.split("@");
+        String player = values[3];
+        if (player.equalsIgnoreCase("B")) {
+            return "R";
+        } else {
+            return "B";
         }
     }
 
