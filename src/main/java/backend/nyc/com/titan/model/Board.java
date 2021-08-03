@@ -74,6 +74,8 @@ public class Board {
         Piece fromPiece = pieces[fromX][fromY];
         Piece toPiece = pieces[toX][toY];
 
+        printBoard(PlayerSide.SPECTATOR);
+
         if (!fromPiece.canMove()) {
             System.out.println("Cannot move a " + fromPiece.getType());
             return false;
@@ -89,11 +91,13 @@ public class Board {
         PlayerSide fromOwner = fromPiece.getPlayerSide();
         PlayerSide toOwner = toPiece.getPlayerSide();
 
+        System.out.println("(Should be equal) Comparing fromOwner: " + fromOwner + " to playerSide: " + playerSide);
         if (fromOwner != playerSide) {
             System.out.println("Player " + playerSide + " cannot move someone else's piece");
             return false;
         }
 
+        System.out.println("(Should not be equal) Comparing fromOwner: " + fromOwner + " to toOwner: " + toOwner);
         if (fromOwner == toOwner) {
             System.out.println("A player cannot attack their own piece " + fromPiece.getType());
             return false;

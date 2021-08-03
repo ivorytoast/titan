@@ -65,7 +65,11 @@ public class GameController {
         int toY = moveRequest.getToY();
         SessionDB session = dao.getLatestVersionOfSession(id);
         Board board = new Board(session.getBoard());
-        board.movePiece(playerSide, fromX, fromY, toX, toY);
+        boolean moveValid = board.movePiece(playerSide, fromX, fromY, toX, toY);
+
+        if (!moveValid) {
+            return "No move performed since it was not valid...";
+        }
 
         // Update the database
         SessionDB dbSession = dao.getLatestVersionOfSession(id);
