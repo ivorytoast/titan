@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class BoardUtils {
 
-    public static final String SAMPLE_BOARD = "5~2@F~B~E~5~5~T~5~5~B~F@B~B~E~B~B~E~R~R~R~R@B";
+    public static final String SAMPLE_BOARD = "5~2@F~B~3~4~E~E~6~7~B~F@B~B~B~B~E~E~R~R~R~R@B";
 
     public static void PrintBoard(Piece[][] pieces) {
         if (pieces == null) {

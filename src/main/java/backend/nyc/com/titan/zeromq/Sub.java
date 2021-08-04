@@ -26,8 +26,8 @@ public class Sub implements Runnable {
         try (ZContext context = new ZContext()) {
             System.out.println("Starting a new client listening to: [" + getTopic() + "]");
             ZMQ.Socket subscriber = context.createSocket(SocketType.SUB);
-            subscriber.connect("tcp://proxy.titan-backend-nyc.com:5556");
-//            subscriber.connect("tcp://localhost:5556");
+//            subscriber.connect("tcp://proxy.titan-backend-nyc.com:5556");
+            subscriber.connect("tcp://localhost:5556");
             subscriber.subscribe(topic.getBytes(ZMQ.CHARSET));
             System.out.println("Listening for new packets...");
             ClientUtils.PrintOutPlayersInSession(getTopic());

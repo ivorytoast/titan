@@ -47,9 +47,9 @@ Therefore, you can experiment with the game. See what changes you would like to 
 * /game/cache/v1/players/{id}
 
 #### POST
-* /game/update/board
+* /game/v1/new
 * /game/move
-* /game/new/redis
+* /game/update/board
 * /game/join
 
 #### Tips To Understand The Endpoints

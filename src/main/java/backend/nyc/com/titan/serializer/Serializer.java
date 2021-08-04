@@ -1,15 +1,10 @@
 package backend.nyc.com.titan.serializer;
 
 import backend.nyc.com.titan.model.Piece;
-import backend.nyc.com.titan.model.Player;
-import backend.nyc.com.titan.model.enums.PieceType;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.pieces.*;
 
 import java.util.StringJoiner;
-
-
-// "5~2@F~B~E~5~5~T~5~5~B~F@B~B~E~B~B~E~R~R~R~R@B"
 
 public class Serializer {
 

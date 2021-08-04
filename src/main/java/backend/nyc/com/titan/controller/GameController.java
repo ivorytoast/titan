@@ -5,6 +5,7 @@ import backend.nyc.com.titan.domain.SessionDB;
 import backend.nyc.com.titan.domain.SessionRepository;
 import backend.nyc.com.titan.model.Board;
 import backend.nyc.com.titan.model.BoardUpdate;
+import backend.nyc.com.titan.model.Piece;
 import backend.nyc.com.titan.model.Player;
 import backend.nyc.com.titan.model.enums.PlayerSide;
 import backend.nyc.com.titan.model.requests.BoardUpdateRequest;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping(value = "/game", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,6 +34,39 @@ public class GameController {
     public GameController(SessionRepository dao, Pub pub) {
         this.dao = dao;
         this.pub = pub;
+    }
+
+    private String newSessionId() {
+        final char[] TEMP_CHARS = { '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+                'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S',
+                'T', 'V', 'W', 'X', 'Y', 'Z'};
+
+        Random random = new Random();
+        List<SessionDB> listOfSessions;
+        StringBuilder newId;
+        do {
+            newId = new StringBuilder();
+            for (int i = 0; i < 5; i++) {
+                newId.append(TEMP_CHARS[random.nextInt(TEMP_CHARS.length)]);
+            }
+            listOfSessions = dao.getSessionsById(newId.toString());
+        } while (listOfSessions.size() != 0);
+
+        return newId.toString();
+    }
+
+    @PostMapping("/v1/new")
+    public String newSession(@RequestBody NewGameRequest newGameRequest) {
+        log.info("Creating a new session");
+        String sessionId = newSessionId();
+        String playerName = newGameRequest.getPlayerName();
+        String board = newGameRequest.getBoard();
+        dao.insertNewSession(sessionId, BoardUtils.SAMPLE_BOARD, 1);
+        RedisClient.AddNewSession(sessionId);
+        RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
+        RedisClient.ReturnPlayersInSession(sessionId);
+        log.info("Created new session on server: " + sessionId);
+        return sessionId;
     }
 
     @GetMapping("/db/board/{id}")
@@ -65,7 +100,8 @@ public class GameController {
         int toY = moveRequest.getToY();
         SessionDB session = dao.getLatestVersionOfSession(id);
         Board board = new Board(session.getBoard());
-        boolean moveValid = board.movePiece(playerSide, fromX, fromY, toX, toY);
+        Piece[][] pieces = Serializer.deserializeBoard(session.getBoard());
+        boolean moveValid = board.movePiece(pieces, playerSide, fromX, fromY, toX, toY);
 
         if (!moveValid) {
             return "No move performed since it was not valid...";
@@ -75,7 +111,7 @@ public class GameController {
         SessionDB dbSession = dao.getLatestVersionOfSession(id);
         int version = dbSession.getVersion();
         String nextPlayer = Serializer.GetNextPlayer(session.getBoard());
-        String newBoard = Serializer.serializeBoard(board.getPieces(), nextPlayer);
+        String newBoard = Serializer.serializeBoard(pieces, nextPlayer);
         int newVersion = version + 1;
         log.info("Inserting into the database the following: (" + id + ", " + newVersion);
         log.info("The board being inserted: " + newBoard);
@@ -83,19 +119,6 @@ public class GameController {
         pub.addToUpdates(new BoardUpdate(id, newBoard));
 
         return newBoard;
-    }
-
-    @PostMapping("/new/redis")
-    public String newSession(@RequestBody NewGameRequest newGameRequest) {
-        log.info("Creating a new session");
-        String sessionId = newGameRequest.getSessionId();
-        String playerName = newGameRequest.getPlayerName();
-        dao.insertNewSession(sessionId, BoardUtils.SAMPLE_BOARD, 1);
-        RedisClient.AddNewSession(sessionId);
-        RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
-        RedisClient.ReturnPlayersInSession(sessionId);
-        log.info("Created new session on server: " + sessionId);
-        return "Created new session (Client Log): " + sessionId;
     }
 
     @PostMapping("/join")

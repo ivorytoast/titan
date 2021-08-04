@@ -2,10 +2,7 @@ package backend.nyc.com.titan.client;
 
 import backend.nyc.com.titan.client.okhttp.OkUtils;
 import backend.nyc.com.titan.common.BoardUtils;
-import backend.nyc.com.titan.model.Player;
-import backend.nyc.com.titan.model.Session;
 import backend.nyc.com.titan.model.enums.PlayerSide;
-import backend.nyc.com.titan.redis.RedisClient;
 import lombok.extern.java.Log;
 
 import java.io.IOException;
@@ -46,14 +43,6 @@ public class ClientUtils {
         } catch (Exception e) {
             System.out.println("Error printing players in session: " + sessionId);
         }
-    }
-
-    public static Session CreateNewSession(String playerName, String id) throws Exception {
-        Player player = new Player(playerName, PlayerSide.BLUE);
-        OkUtils.CreateNewBoard(id, playerName);
-        Session session = new Session(player);
-        RedisClient.AddNewSession(id);
-        return session;
     }
 
     public static void Move(String sessionId, PlayerSide playerSide) {

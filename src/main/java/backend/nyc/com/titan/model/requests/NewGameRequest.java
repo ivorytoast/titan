@@ -2,22 +2,24 @@ package backend.nyc.com.titan.model.requests;
 
 public class NewGameRequest {
 
-    private String sessionId;
     private String playerName;
+    private String board;
 
     public NewGameRequest() {}
 
-    public NewGameRequest(String sessionId, String playerName) {
-        this.sessionId = sessionId;
+    public NewGameRequest(String playerName) {
         this.playerName = playerName;
+        this.board = "";
     }
 
-    public String getSessionId() {
-        return sessionId;
+    public NewGameRequest(String playerName, String board) {
+        this.playerName = playerName;
+        this.board = board;
     }
 
     public String getPlayerName() {
         return playerName;
     }
 
+    public String getBoard() { return board; }
 }
