@@ -9,6 +9,10 @@ import java.io.Serializable;
 
 public class BoardUtils {
 
+    public static final String createSampleBoard(String sessionId) {
+        return "10~10@4~B~3~3~B~3~F~3~B~4~B~6~7~B~3~7~7~6~2~8~2~5~8~S~2~2~8~2~5~2~5~4~6~9~2~2~10~6~4~5~E~E~T~T~E~E~T~T~E~E~E~E~T~T~E~E~T~T~E~E~5~4~6~9~2~2~10~6~4~5~2~5~8~S~2~2~8~2~5~2~B~6~7~B~3~7~7~6~2~8~4~B~3~3~B~3~F~3~B~4@B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~B~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~E~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R~R@B@" + sessionId;
+    }
+
     public static final String SAMPLE_BOARD = "5~2@F~B~3~4~E~E~6~7~B~F@B~B~B~B~E~E~R~R~R~R@B";
 
     public static void PrintBoard(Piece[][] pieces) {

@@ -60,8 +60,7 @@ public class GameController {
         log.info("Creating a new session");
         String sessionId = newSessionId();
         String playerName = newGameRequest.getPlayerName();
-        String board = newGameRequest.getBoard();
-        dao.insertNewSession(sessionId, BoardUtils.SAMPLE_BOARD, 1);
+        dao.insertNewSession(sessionId, BoardUtils.createSampleBoard(sessionId), 1);
         RedisClient.AddNewSession(sessionId);
         RedisClient.AddPlayerToSession(sessionId, PlayerSide.BLUE, playerName);
         RedisClient.ReturnPlayersInSession(sessionId);
