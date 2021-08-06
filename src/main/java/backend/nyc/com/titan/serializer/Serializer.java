@@ -64,7 +64,7 @@ public class Serializer {
         return board;
     }
 
-    public static String serializeBoard(Piece[][] board, String currentPlayer) {
+    public static String serializeBoard(String sessionId, Piece[][] board, String currentPlayer) {
         if (board == null) {
             return "";
         }
@@ -98,6 +98,8 @@ public class Serializer {
         closedPieces.append(owners);
         closedPieces.append("@");
         closedPieces.append(currentPlayer);
+        closedPieces.append("@");
+        closedPieces.append(sessionId);
 
         return closedPieces.toString();
     }

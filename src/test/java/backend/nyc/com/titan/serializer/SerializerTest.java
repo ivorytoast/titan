@@ -30,27 +30,29 @@ public class SerializerTest {
     Piece[][] testOne = new Piece[][]{red_one, red_two, empty_one, blue_two, blue_one};
     Piece[][] testTwo = new Piece[][]{red_two, empty_one, blue_two};
 
+    String fakeId = "12345";
+
     @Test
     void serialize_1() {
-        String output = Serializer.serializeBoard(testOne, "B");
+        String output = Serializer.serializeBoard(fakeId, testOne, "B");
         assertEquals("5~2@F~B~10~10~E~T~10~10~F~B@R~R~R~R~E~E~B~B~B~B@B", output);
     }
 
     @Test
     void serialize_2() {
-        String output = Serializer.serializeBoard(testTwo, "R");
+        String output = Serializer.serializeBoard(fakeId, testTwo, "R");
         assertEquals("3~2@10~10~E~T~10~10@R~R~E~E~B~B@R", output);
     }
 
     @Test
     void serialize_3() {
-        String output = Serializer.serializeBoard(null, "");
+        String output = Serializer.serializeBoard(fakeId, null, "");
         assertEquals("", output);
     }
 
     @Test
     void serialize_4() {
-        String output = Serializer.serializeBoard(new Piece[][]{}, "");
+        String output = Serializer.serializeBoard(fakeId, new Piece[][]{}, "");
         assertEquals("", output);
     }
 

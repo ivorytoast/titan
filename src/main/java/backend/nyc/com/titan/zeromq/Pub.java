@@ -33,11 +33,10 @@ public class Pub implements Runnable {
                     log.info("Received updated board!");
                     BoardUpdate update = updates.poll();
                     if (update != null) {
-                        String topic = update.getSessionId();
                         String message = update.getBoard();
-                        publisher.send(topic, ZMQ.SNDMORE);
+                        publisher.send("*", ZMQ.SNDMORE);
                         publisher.send(message);
-                        log.info("Published: [" + topic + ", " + message + "]");
+                        log.info("Published: [ *, " + message + "]");
                     } else {
                         log.warning("Nothing to publish since the object was null in the queue...");
                     }

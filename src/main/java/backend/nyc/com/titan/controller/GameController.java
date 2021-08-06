@@ -111,7 +111,7 @@ public class GameController {
         SessionDB dbSession = dao.getLatestVersionOfSession(id);
         int version = dbSession.getVersion();
         String nextPlayer = Serializer.GetNextPlayer(session.getBoard());
-        String newBoard = Serializer.serializeBoard(pieces, nextPlayer);
+        String newBoard = Serializer.serializeBoard(id, pieces, nextPlayer);
         int newVersion = version + 1;
         log.info("Inserting into the database the following: (" + id + ", " + newVersion);
         log.info("The board being inserted: " + newBoard);
