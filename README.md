@@ -1,11 +1,16 @@
-# Create and Join a New Game
+# Videos To Show Off Various Game Features
+
+## Create, Join, and Spectate Games
 * The player who creates the game is always blue
 * The player who joins the game is always red
 * Any player after the first two who join a game is a spectator (cannot move any pieces)
 
 https://user-images.githubusercontent.com/8243054/128615750-2a9f4824-66cc-4844-9d66-168e6ff9721b.mp4
 
+## Players can only move their pieces during their turn
+* Spectators can ONLY spectate. They cannot move any pieces
 
+https://user-images.githubusercontent.com/8243054/128615894-6b7d91e3-4ce1-4874-ab7f-335e5ba80e4a.mp4
 
 
 # Commands
