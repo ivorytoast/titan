@@ -17,17 +17,16 @@ https://user-images.githubusercontent.com/8243054/128615894-6b7d91e3-4ce1-4874-a
 ## Players can rejoin the match and will be able to resume with their correct pieces
 * The player name can be seen as an ID. Once a player creates/joins a match, if they are assigned to that color, the REDIS database will remember which pieces they control
 
-https://user-images.githubusercontent.com/8243054/128615956-f2e0ee39-63e1-4dad-8650-09c5f3b5661c.mp4
-
+https://user-images.githubusercontent.com/8243054/128615979-9263b948-c5cf-45b0-9dcd-e3a6660da471.mp4
 
 # Commands
 
-    (Latest version = 0.5.0)
+    (Latest version = 0.7.0)
 
    * mvn clean install -DskipTests
-   * docker build -t ivorytoast3853/titan-amg:0.5.0 .
-   * docker push ivorytoast3853/titan-amg:0.5.0
-   * docker run -p 8080:8080 ivorytoast3853/titan-amg:0.5.0
+   * docker build -t ivorytoast3853/titan-amg:0.7.0 .
+   * docker push ivorytoast3853/titan-amg:0.7.0
+   * docker run -p 8080:8080 ivorytoast3853/titan-amg:0.7.0
 
 
    * docker-compose -f docker-compose.yml up --build -d
@@ -65,21 +64,17 @@ Therefore, you can experiment with the game. See what changes you would like to 
 
 ### Endpoints List
 #### GET
-* /game/db/v1/board/{id}
-* /game/cache/v1/players/{id}
+* /game/v1/board/{id}
+* /game/v1/players/{id}
 
 #### POST
 * /game/v1/new
-* /game/move
-* /game/update/board
-* /game/join
-
-#### Tips To Understand The Endpoints
-* If it has a "/db/" in the path, it is going to the PostgreSQL database. This means you are going to retrieve board related information
-* If it has a "/cache/" in the path, it is going to the Redis cache. This is where the metadata (such as each game's session player list) is stored
+* /game/v1/move
+* /game/v1/update
+* /game/v1/join
 
 
 ## Endpoints In Details
-1. /game/db/v1/board/{id}
+1. /game/v1/board/{id}
    * {id} = [Type=String, Value=SessionId]
    * Returns the latest board in the given SessionId
