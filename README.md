@@ -59,8 +59,8 @@ Therefore, you can experiment with the game. See what changes you would like to 
 
 # API Docs
 ### Urls
-1. http://localhost:8080
-2. http://proxy.titan-backend-nyc.com:8080
+1. UI -> https://pluto-ivorytoast.vercel.app/
+2. Backend -> http://proxy.titan-backend-nyc.com:8080
 
 ### Endpoints List
 #### GET
@@ -73,8 +73,17 @@ Therefore, you can experiment with the game. See what changes you would like to 
 * /game/v1/update
 * /game/v1/join
 
+# Interesting Features To Point Out
+## Running on Digital Ocean Infrastructure
+### Summary
+* Has 1 Droplet (Titan)
+* Has 1 Managed Database Cluster
+* Has 1 Google Domain (titan-backend-nyc.com)
+### Security
+* Firewall Setup:
+   * SSH on Port 22 only allowed from my IP and titan itself. This was necessary because it is exposed to the internet there were thousands of login attempts per minute on the droplet from global IP addresses
+   * TCP (Port 81) from my IP address. This is to allow myself to manage the Nginx Proxy Manager application
+   * TCP (Port 443 -> HTTPS) for all IPv4 and IPv6 addresses to allow any user to interact with the Vercel front end UI 
+   * All requests are proxied through an Nginx proxy to allow a client to hit a HTTPS endpoint even though Titan runs on HTTP
 
-## Endpoints In Details
-1. /game/v1/board/{id}
-   * {id} = [Type=String, Value=SessionId]
-   * Returns the latest board in the given SessionId
+## The login css came from: https://tailwindcomponents.com/component/login. All credit to Cristian Mosquera Mosquera for creating such a nice login layout
