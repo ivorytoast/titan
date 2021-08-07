@@ -40,8 +40,13 @@ A backend service which emulates the game Stratego. All through REST endpoints, 
 * Spectate an existing game session
 * Move pieces that belong to you
 * Java Client
+* NodeJS Client
+* Pub/Sub mechanism which sends out all board updates which the session id as the topic
+
 ### Features To Be Added
 * Replay existing games
+* Have UI cover piece values which do not belong to the user
+* Update serialized board string to include when a flag was captured
 
 ### Why Contribute
 It is currently running on a Digital Ocean Droplet which is connected to a Digital Ocean managed PostgreSQL database
