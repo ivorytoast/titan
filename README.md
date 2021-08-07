@@ -8,9 +8,16 @@
 https://user-images.githubusercontent.com/8243054/128615750-2a9f4824-66cc-4844-9d66-168e6ff9721b.mp4
 
 ## Players can only move their pieces during their turn
+* Every move is updated on each player/spectator's board without the need to manually refresh
+* The blue/red circles above are highlighted (in green) to show which player is meant to move next
 * Spectators can ONLY spectate. They cannot move any pieces
 
 https://user-images.githubusercontent.com/8243054/128615894-6b7d91e3-4ce1-4874-ab7f-335e5ba80e4a.mp4
+
+## Players can rejoin the match and will be able to resume with their correct pieces
+* The player name can be seen as an ID. Once a player creates/joins a match, if they are assigned to that color, the REDIS database will remember which pieces they control
+
+https://user-images.githubusercontent.com/8243054/128615956-f2e0ee39-63e1-4dad-8650-09c5f3b5661c.mp4
 
 
 # Commands
